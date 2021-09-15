@@ -1,0 +1,17 @@
+#body{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    padding-top:100px;
+    background-color: #E5E5E5;
+}
+h1{
+    text-align: center;
+}
+.formulaire{
+    background-color: #ffff;
+    padding: 100px;
+    border-radius: 6px;
+}
