@@ -1,0 +1,7 @@
+a{
+    color: white;
+    transition: color 0.5 cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+a:hover{
+    color: rgb(191, 217, 252);
+}

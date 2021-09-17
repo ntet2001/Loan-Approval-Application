@@ -26,13 +26,13 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Files</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="../reseau/indexReseau.php">Network</a>
+                            <a class="dropdown-item" href="#">Network</a>
                             <a class="dropdown-item" href="../section/indexSection.php">Section</a>
                             <a class="dropdown-item" href="../pole/indexPole.php">Pole</a>
                             <a class="dropdown-item" href="../agence/indexAgence.php">Agency</a>
                             <a class="dropdown-item" href="../document/indexDocument.php">Documents</a>
                             <a class="dropdown-item" href="../client/indexClient.php">Customers</a>
-                            <a class="dropdown-item" href="#">Type Loan</a>
+                            <a class="dropdown-item" href="../typePret/indexType.php">Type Loan</a>
                             <a class="dropdown-item" href="../butPret/indexbut.php">Purpose Loan</a>
                             <a class="dropdown-item" href="../naturePret/indexNature.php">Nature Loan</a>
                         </div>

@@ -1,0 +1,14 @@
+/*
+*css on my list style on my links
+*/
+li{
+    list-style: none;
+}
+
+a{
+    color: #ffff;
+    transition: color 0.2s ease-in;
+}
+a:hover{
+    color: rgb(209, 233, 253);
+}
