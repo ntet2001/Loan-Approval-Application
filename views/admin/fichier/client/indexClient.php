@@ -66,5 +66,34 @@
             </div>
         </nav>
     </header>
+    <!--mon main avec mon Formulaire d'enregistrement-->
+    <main class="container">
+        <h3 style="text-align: center;margin-bottom:50px;">Register Customer</h3>
+        <form action="indexClient.php" method="post">
+            <div class="row formulaire">
+                <div class="col-lg-6 form-group">
+                    <label for="numClient">Customer Num</label><br>
+                    <input type="text" name="numClient" id="numClient" class="form-control"><br>
+                    <label for="nomClient">Custormer Name</label><br>
+                    <input type="text" name="nomClient" id="nomClient" class="form-control"><br>
+                    <label for="prenomClient">Last Name</label><br>
+                    <input type="text" name="prenomClient" id="prenomClient" class="form-control"><br>
+                    <input type="file" name="infoClient" id="infoClient">
+                </div>
+                <div class="col-lg-6 form-group">
+                    <label for="emailClient">Customer Email</label><br>
+                    <input type="email" name="emailClient" id="emailClient" class="form-control"><br>
+                    <label for="telephoneClient">Custormer Phone</label><br>
+                    <input type="tel" name="telephoneClient" id="telephoneClient" class="form-control"><br>
+                    <label for="AgenceClient">Agency</label><br>
+                    <select name="AgenceClient" id="AgenceClient" class="form-control">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <button type="reset" class="btn btn-primary">Reset</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </main>
 </body>
 </html>

@@ -66,5 +66,35 @@
             </div>
         </nav>
     </header>
+    <!--mon main et tableau--->
+    <main class="container">
+        <form action="indexType.php" method="post" style="margin-bottom: 50px;">
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <input type="file" name="importerType" id="importerType">
+                </div>
+            </div> 
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <div class="row tableau">
+            <div class="col">
+                <caption><h4 style="text-align: center;">Type Loans</h4></caption>
+                <table class="table table-hover table-bordered table-triped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Type Loan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>OFC</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

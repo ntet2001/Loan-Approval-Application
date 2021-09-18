@@ -66,5 +66,29 @@
             </div>
         </nav>
     </header>
+    <!---mon main --->
+    <main class="container">
+        <div class="row tableau">
+            <div class="col">
+                <caption><h4 style="text-align: center;">ALL DOCUMENTS</h4></caption>
+                <table class="table table-hover table-bordered table-triped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Document Name</th>
+                            <th>Customer Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Titre Foncier</td>
+                            <td>John Doe</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

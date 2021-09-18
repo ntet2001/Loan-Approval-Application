@@ -66,5 +66,37 @@
             </div>
         </nav>
     </header>
+    <!--mon main et tableau--->
+    <main class="container">
+        <form action="indexNature.php" method="post" style="margin-bottom: 50px;">
+            <div class="row">
+                <div class="form-group col-lg-6">
+                    <input type="file" name="importerNature" id="importerNature">
+                </div>
+            </div> 
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <div class="row tableau">
+            <div class="col">
+                <caption><h4 style="text-align: center;">Nature Loan</h4></caption>
+                <table class="table table-hover table-bordered table-triped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nature Loan</th>
+                            <th>Purpose Loan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>OFC</td>
+                            <td>OFC</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
