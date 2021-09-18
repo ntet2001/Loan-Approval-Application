@@ -8,6 +8,7 @@
     <!--link call bootstrap css-->
     <link rel="stylesheet" href="../../../dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="./styleSection.css">
         <!--call bootstrap javascript-->
     <script src="../../../dist/jquery/jquery-3.6.0.min.js"></script>
     <script src="../../../dist/js/bootstrap.js"></script>
@@ -66,5 +67,49 @@
             </div>
         </nav>
     </header>
+    <!--main de mon fichier avec formulaire et tableau-->
+    <main class="container">
+        <!---Formulaire-->
+        <div class="row formulaire">
+            <div class="col-lg-6">
+                <form action="indexSection.php" method="post">
+                    <div class="form-group">
+                        <label for="nomSection"><h3>Section Name</h3></label><br>
+                        <input type="text" name="nomSection" id="nomSection" class="form-control"><br>
+                        <label for="nomReseau"><h3>Network Name</h3></label><br>
+                        <select name="nomReseau" id="nomReseau" class="form-control">
+                            <option value="Audit">1 Audit</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-primary">Reset</button>
+                </form>
+            </div>
+        </div>
+        <!----tableau---->
+        <div class="row tableau">
+            <div class="col">
+                <caption><h4>ALL SECTIONS</h4></caption>
+                <table class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Section Name</th>
+                            <th>Network Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Cam</td>
+                            <td>Audit</td>
+                            <td><a href="./updateSection.php" class="btn btn-warning">Modifier</a> <a href="./deleteSection.php" class="btn btn-danger">Supprimer</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

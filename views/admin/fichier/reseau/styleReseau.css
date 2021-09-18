@@ -1,0 +1,11 @@
+/*
+*style sur mon formulaire et sur l'alignement des textes du tableau
+*/
+
+.formulaire{
+    margin-bottom: 60px;
+}
+
+h4{
+    text-align: center;
+}

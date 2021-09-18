@@ -8,6 +8,7 @@
     <!--link call bootstrap css-->
     <link rel="stylesheet" href="../../../dist/css/bootstrap.css">
     <link rel="stylesheet" href="../../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="styleReseau.css">
         <!--call bootstrap javascript-->
     <script src="../../../dist/jquery/jquery-3.6.0.min.js"></script>
     <script src="../../../dist/js/bootstrap.js"></script>
@@ -66,5 +67,45 @@
             </div>
         </nav>
     </header>
+    <!--partie principale de mon fichier reseau avec formulaire et tableau-->
+
+    <main class="container">
+        <div class="row formulaire">
+            <div class="col-lg-6">
+                <!--formulaire-->
+                <form action="indexReseau.php" method="post">
+                    <div class="form-group">
+                        <label for="nomReseau"><h3>Network Name</h3></label><br>
+                        <input type="text" name="nomReseau" id="nomReseau" class="form-control"><br>
+                        <input type="file" name="importData" id="importData">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-primary">Reset</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row tableau">
+            <div class="col">
+                <caption><h4>ALL THE NETWORKS</h4></caption>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Network Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Audit</td>
+                            <td><a href="./updateReseau.php" class="btn btn-warning">Modifier</a> <a href="./deleteReseau.php" class="btn btn-danger">Supprimer</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

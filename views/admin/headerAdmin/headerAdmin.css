@@ -12,3 +12,24 @@ a{
 a:hover{
     color: rgb(209, 233, 253);
 }
+/*
+*css sur mon header et mon main
+*/
+header{
+    margin-bottom: 100px;
+}
+
+/*mon svg et son animation*/
+#check1{
+    animation: reviens 1s ease-out 1 ;
+}
+#check2{
+    animation: reviens 1.4s ease-out 1 ;
+}
+#check3{
+    animation: reviens 1.8s ease-out 1 ;
+}
+@keyframes reviens {
+    from{transform: translateX(1700px)}
+    to{transform: translateX(0px)}
+}
