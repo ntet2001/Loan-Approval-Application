@@ -67,5 +67,27 @@
             </div>
         </nav>
     </header>
+    <main class="container">
+        <h1 style="margin-bottom: 20px;">Register User </h1>
+        <div class="row formulaire">
+            <div class="col-lg-6">
+                <form action="indexUser.php" method="post">
+                    <div class="form-group">
+                        <label for="profile">Profile</label><br>
+                        <input type="text" name="profile" id="profile" class="form-control"><br>
+                        <label for="password">Password</label><br>
+                        <input type="password" name="password" id="password" class="form-control"><br>
+                        <label for="confirmPassword">Confirm Password</label><br>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    <a href="./viewUser.php" class="btn btn-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+</svg> View Profiles</a>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

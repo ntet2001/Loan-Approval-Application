@@ -76,7 +76,7 @@
                     <div class="form-group">
                         <label for="nomAgence"><h3>Agency Name</h3></label><br>
                         <input type="text" name="nomAgence" id="nomAgence" class="form-control" placeholder="Name"><br>
-                        <label for="nomPole"><h3>Section Name</h3></label><br>
+                        <label for="nomPole"><h3>Pole Name</h3></label><br>
                         <select name="nomPole" id="nomPole" class="form-control">
                             <option value="NTA">1 NTA</option>
                         </select>
