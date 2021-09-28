@@ -93,7 +93,7 @@
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
                     <div class="col-lg-7">
                         <label for="montantaccorde"><strong>Amount Accorded</strong></label><br>
-                        <input type="number" name="montantaccorde" id="montantaccorde" class="form-control"><br>
+                        <input type="number" name="montantaccorde" id="montantaccorde" class="form-control" required><br>
                     </div>
                     <label for="decision"><strong>Decision</strong></label>
                         <select name="decision" id="decision" class="form-control">

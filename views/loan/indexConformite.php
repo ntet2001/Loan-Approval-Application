@@ -25,34 +25,34 @@
                                 <div class="check_1">
                                     <label for="numClient"><strong>Num Customer</strong></label><br>
                                     <input type="text" name="numClient" id="numClient" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite1" class="conformite"><br>
                                 </div>
                                 <div class="check_2">
                                     <label for="nomClient"><strong>Name</strong></label><br>
                                     <input type="text" name="nomClient" id="nomClient" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite2" class="conformite"><br>
                                 </div>
                                 <div class="check_3">
                                     <label for="prenomClient"><strong>Last Name</strong></label><br>
                                     <input type="text" name="prenomClient" id="prenomClient" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br> 
+                                    <input type="checkbox" name="conformite[]" id="conformite3" class="conformite"><br> 
                                 </div>
                                 <div class="check_4">
                                     <label for="emailClient"><strong>Email</strong></label><br>
                                     <input type="email" name="emailClient" id="emailClient" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite4" class="conformite"><br>
                                 </div>
                                 <div class="check_5">
                                     <label for="telephoneClient"><strong>Phone Number</strong></label><br>
                                     <input type="tel" name="telephoneClient" id="telephoneClient" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite5" class="conformite"><br>
                                 </div>
                                 <div class="check_6">
                                     <label for="document"><strong> Document</strong></label><br>
                                     <select name="document" id="document" class="form-control">
                                         <option value=""></option>
                                     </select>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite6" class="conformite"><br>
                                 </div>
                             </div>
                         </div>
@@ -62,32 +62,32 @@
                                 <div class="check_1">
                                     <label for="montantdemande"><strong>Amout Asked</strong></label><br>
                                     <input type="number" name="montantdemande" id="montantdemande" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite7" class="conformite"><br>
                                 </div>
                                 <div class="check_2">
                                     <label for="periodicite"><strong>Periodicity</strong></label><br>
                                     <input type="text" name="periodicite" id="periodicite" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite8" class="conformite"><br>
                                 </div>
                                 <div class="check_3">
                                     <label for="echeance"><strong>deadline</strong></label><br>
                                     <input type="number" name="echeance" id="echeance" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite9" class="conformite"><br>
                                 </div>
                                 <div class="check_4">
                                     <label for="typeCredit"><strong>Type Loan</strong></label><br>
                                     <input type="text" name="typeCredit" id="typeCredit" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite10" class="conformite"><br>
                                 </div>
                                 <div class="check_5">
                                     <label for="but"><strong>Purpose Loan</strong></label><br>
                                     <input type="text" name="but" id="but" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite11" class="conformite"><br>
                                 </div>
                                 <div class="check_6">
                                     <label for="nature"><strong>Nature Loan</strong></label><br>
                                     <input type="text" name="nature" id="nature" class="form-control" disabled>
-                                    <input type="checkbox" name="conformite[]" id="conformite"><br>
+                                    <input type="checkbox" name="conformite[]" id="conformite12" class="conformite"><br>
                                 </div>
                             </div>
                         </div>
@@ -98,5 +98,6 @@
                 </form>
             </div>
     </main>
+    <script src="./conformite.js"></script>
 </body>
 </html>

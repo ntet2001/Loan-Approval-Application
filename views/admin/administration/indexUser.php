@@ -12,6 +12,8 @@
     <script src="../../dist/jquery/jquery-3.6.0.min.js"></script>
     <script src="../../dist/js/bootstrap.js"></script>
     <script src="../../dist/js/popper.min.js"></script>
+    <!---script pour verification du mot de passe-->
+    <script src="./user.js" defer></script>
 </head>
 <body>
     <!---header pour ma navbar -->
@@ -70,13 +72,14 @@
         <div class="row formulaire">
             <div class="col-lg-6">
                 <form action="indexUser.php" method="post">
-                    <div class="form-group">
+                    <div class="form-group" id='divVerification'>
                         <label for="profile">Profile</label><br>
                         <input type="text" name="profile" id="profile" class="form-control"><br>
                         <label for="password">Password</label><br>
-                        <input type="password" name="password" id="password" class="form-control"><br>
-                        <label for="confirmPassword">Confirm Password</label><br>
-                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+                        <input type="password" name="password" id="password" class="form-control" value=""><br>
+                        <label for="confirmPassword" class="labelConfirm">Confirm Password</label><br>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" value=""><br>
+                        <div id="verification"></div>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                     <a href="./viewUser.php" class="btn btn-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
