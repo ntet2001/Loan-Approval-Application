@@ -92,12 +92,34 @@
                             </div>
                         </div>
                     </div>
-                    <div id="decision" class="alert alert-warning"></div>
+                    <button id="checkbtn" class="btn btn-primary" style="margin-bottom: 10px;">Checked the Request</button>
+                    <div id="decision"></div>
                     <a href="./initiation.php" class="btn btn-danger">Reject</a>
                     <button type="submit" class="btn btn-success">Send To Analyst</button>
                 </form>
             </div>
     </main>
-    <script src="./conformite.js"></script>
+    <script defer>
+        let inputcheck=document.getElementsByTagName('input');
+        let decision=document.getElementById('decision');
+        let compteur=0;
+        let checkbtn=document.getElementById('checkbtn');
+
+        checkbtn.addEventListener('click',function (e) {
+            e.preventDefault();
+            for (let i = 0; i < inputcheck.length; i++) {
+                if (inputcheck[i].type=='checkbox' && inputcheck[i].checked) {
+                compteur++;
+                }
+            }
+            if (compteur == 12) {
+                decision.className='alert alert-success';
+                decision.textContent='The request can be send to Analyst';
+            }else{
+                decision.className='alert alert-danger';
+                decision.textContent='The request can\'t be send to Analyst';
+            }
+        },false);
+    </script>
 </body>
 </html>
