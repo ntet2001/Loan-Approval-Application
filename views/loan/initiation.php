@@ -22,8 +22,10 @@
                     <div class="col-lg-6">
                         <h3>Custormer Informations</h3>
                         <div class="form-group">
-                            <label for="numClient">Num Customer</label><br>
-                            <input type="text" name="numClient" id="numClient" class="form-control">
+                            <label for="numClient">Customer No :</label><br>
+                            <select name="numClient" id="numClient" class="form-control">
+                                <option value=""></option>
+                            </select>
                             <label for="nomClient">Name</label><br>
                             <input type="text" name="nomClient" id="nomClient" class="form-control">
                             <label for="prenomClient">Last Name</label><br>
@@ -43,20 +45,32 @@
                             <label for="montantdemande">Amout Asked</label><br>
                             <input type="number" name="montantdemande" id="montantdemande" class="form-control">
                             <label for="periodicite">Periodicity</label><br>
-                            <input type="text" name="periodicite" id="periodicite" class="form-control">
+                            <select name="periodicite" id="periodicite" class="form-control">
+                                <option value=""></option>
+                            </select>
                             <label for="echeance">deadline</label><br>
                             <input type="number" name="echeance" id="echeance" class="form-control">
                             <label for="typeCredit">Type Loan</label><br>
-                            <input type="text" name="typeCredit" id="typeCredit" class="form-control">
+                            <select name="typeCredit" id="typeCredit" class="form-control">
+                                <option value=""></option>
+                            </select>
                             <label for="but">Purpose Loan</label><br>
-                            <input type="text" name="but" id="but" class="form-control"><br>
+                            <select name="but" id="but" class="form-control">
+                                <option value=""></option>
+                            </select>
                             <label for="nature">Nature Loan</label><br>
-                            <input type="text" name="nature" id="nature" class="form-control">
+                            <select name="nature" id="nature" class="form-control">
+                                <option value=""></option>
+                            </select>
                         </div>
                     </div>
                 </div>
+                <div id="decision">
+                    <strong>Opinion:</strong>
+                    <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
+                </div>
                 <button type="reset" class="btn btn-danger">Reset</button>
-                <a href="./indexConformite.php" class="btn btn-success">Send to Confirmation</a>
+                <button type="submit" class="btn btn-success">Send to Confirmation</button>
             </form>
         </div>
     </main>

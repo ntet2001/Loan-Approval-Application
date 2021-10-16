@@ -7,11 +7,20 @@
     <title>Document</title>
     <!--link call bootstrap css-->
     <link rel="stylesheet" href="../../../dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../../../dist/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="../../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="styleReseau.css">
         <!--call bootstrap javascript-->
     <script src="../../../dist/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../../../dist/jquery/jquery.dataTables.min.js"></script>
     <script src="../../../dist/js/bootstrap.js"></script>
+    <script src="../../../dist/js/dataTables.bootstrap4.min.js"></script>
     <script src="../../../dist/js/popper.min.js"></script>
+    <script defer>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+    </script>
 </head>
 <body>
     <!---header pour ma navbar -->
@@ -47,7 +56,7 @@
                             <a class="dropdown-item" href="../../../loan/evaluation1.php">1st evaluation</a>
                             <a class="dropdown-item" href="../../../loan/evaluation2.php">2nd evaluation</a>
                             <a class="dropdown-item" href="../../../loan/evaluation3.php">3rd evaluation</a>
-                            <a class="dropdown-item" href="../../../loan/manager.php">Manager</a>
+                            <a class="dropdown-item" href="../../../loan/manager.php">General Manager</a>
                             <a class="dropdown-item" href="../../../loan/comitee.php">Credit commitee</a>
                             <a class="dropdown-item" href="../../../loan/creditAdmin.php">Credit administration</a>
                         </div>
@@ -57,10 +66,14 @@
                     <li class="nav-item"><a href="../../analyse/indexAnalyse.php" class="nav-link">Analyzies</a></li>
                     <li class="nav-item"><a href="../../outils/indexOutils.php" class="nav-link">Tools</a></li>
                     <li class="nav-item"><a href="../../administration/indexUser.php" class="nav-link">Administration</a></li>
-                    <li class="nav-item"><a href="../../../deconnexion.php" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
-    <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-    </svg>Log Out </a></li>
+                    <li class="nav-item">
+                        <a href="../../../deconnexion.php" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                                <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                            </svg>Log Out 
+                        </a>
+                    </li>
                </div>
             </div>
         </nav>
@@ -71,7 +84,7 @@
         <form action="indexClient.php" method="post">
             <div class="row formulaire">
                 <div class="col-lg-6 form-group">
-                    <label for="numClient">Customer Num</label><br>
+                    <label for="numClient">Customer No:</label><br>
                     <input type="text" name="numClient" id="numClient" class="form-control"><br>
                     <label for="nomClient">Custormer Name</label><br>
                     <input type="text" name="nomClient" id="nomClient" class="form-control" placeholder="ex: Doe"><br>
@@ -93,6 +106,29 @@
             <button type="reset" class="btn btn-primary">Reset</button>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
+        <div class="row" style="margin-top: 50px;">
+            <div class="col">
+            <caption><h4 style="text-align: center;">ALL CUSTOMERS</h4></caption>
+                <table id="example" class="table table-hover table-bordered table-triped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Customers Name</th>
+                            <th>Agency Name</th>
+                            <th>Customers Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Titre Foncier</td>
+                            <td>John Doe</td>
+                            <td>John@gmail.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
 </body>
 </html>

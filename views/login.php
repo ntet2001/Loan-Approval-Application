@@ -8,6 +8,8 @@
     <!--page style-->
     <link rel="stylesheet" href="./dist/css/bootstrap.css"/>
     <link rel="stylesheet" href="./indexLogin.css">
+    <!---page js-->
+    <script src="./connexion.js" defer></script>
 </head>
 <body id="body">
     <!--ma div principale-->
@@ -23,8 +25,9 @@
                     </div>
                     <div class="password form-group">
                         <label for="password">Password</label><br>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter Your Password">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Enter Your Password" maxlength="8">
                     </div>
+                    <div id="verificationmdp"></div><br>
                     <button type="submit" class="btn btn-primary ">Sign in</button>
                 </form>
             </div>

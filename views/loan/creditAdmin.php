@@ -22,7 +22,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <div class="check_1">
-                                    <label for="numClient"><strong>Num Customer</strong></label><br>
+                                    <label for="numClient"><strong>Customer No :</strong></label><br>
                                     <input type="text" name="numClient" id="numClient" class="form-control" disabled>
                                 </div>
                                 <div class="check_2">

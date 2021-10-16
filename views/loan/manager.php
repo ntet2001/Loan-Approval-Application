@@ -14,7 +14,7 @@
 </head>
 <body>
     <main class="container" style="margin-top: 90px;">
-        <h1 style="text-align: center;margin-bottom:20px;">Manager Decision Making Of The Loan Request</h1>
+        <h1 style="text-align: center;margin-bottom:20px;">Manager Decision Making</h1>
             <div class="formulaire" style="margin-bottom: 20px;">
                 <form action="./manager.php" method="post">
                     <div class="row">
@@ -22,7 +22,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <div class="check_1">
-                                    <label for="numClient"><strong>Num Customer</strong></label><br>
+                                    <label for="numClient"><strong>Customer No :</strong></label><br>
                                     <input type="text" name="numClient" id="numClient" class="form-control" disabled>
                                 </div>
                                 <div class="check_2">
@@ -92,19 +92,31 @@
                     <label for="opinion">Opinion and [Approve/Reject]</label>
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
                     <div class="col-lg-7">
+                        <label for="decision"><strong>Decision</strong></label>
+                            <select name="decision" id="decision" class="form-control">
+                                <option value="1"><strong> Approve</strong></option>
+                                <option value="0"><strong>Reject</strong></option>
+                            </select> <br>
                         <label for="montantaccorde"><strong>Amount Accorded</strong></label><br>
                         <input type="number" name="montantaccorde" id="montantaccorde" class="form-control" required><br>
                     </div>
-                    <label for="decision"><strong>Decision</strong></label>
-                        <select name="decision" id="decision" class="form-control">
-                            <option value="1"><strong> Approve</strong></option>
-                            <option value="2"><strong>Reject</strong></option>
-                        </select> <br>
                     <button type="submit" class="btn btn-success">
                         save
                     </button>
                 </form>
             </div>
     </main>
+    <script defer>
+        // on recupere la decision finale et l'input du montant
+        let decision=document.getElementById('decision');
+        let inputMontant=document.getElementById('montantaccorde');
+        decision.addEventListener('change',function (e) {
+            if(e.target.selectedIndex==1){
+                inputMontant.disabled=true;
+            }else{
+                inputMontant.disabled=false;
+            }
+        },false);
+    </script>
 </body>
 </html>

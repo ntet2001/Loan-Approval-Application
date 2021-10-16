@@ -14,7 +14,7 @@
 </head>
 <body>
     <main class="container" style="margin-top: 90px;">
-        <h1 style="text-align: center;">Conformitee of the Loan Initiation</h1>
+        <h1 style="text-align: center;"> Loan Conformity</h1>
         <div class="alert alert-warning">Check the conformitee of the Loan request</div>
             <div class="formulaire" style="margin-bottom: 20px;">
                 <form action="./indexConformite.php" method="post">
@@ -23,7 +23,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <div class="check_1">
-                                    <label for="numClient"><strong>Num Customer</strong></label><br>
+                                    <label for="numClient"><strong>Customer No :</strong></label><br>
                                     <input type="text" name="numClient" id="numClient" class="form-control" disabled>
                                     <input type="checkbox" name="conformite[]" id="conformite1" class="conformite"><br>
                                 </div>
@@ -49,10 +49,13 @@
                                 </div>
                                 <div class="check_6">
                                     <label for="document"><strong> Document</strong></label><br>
-                                    <select name="document" id="document" class="form-control">
-                                        <option value=""></option>
-                                    </select>
-                                    <input type="checkbox" name="conformite[]" id="conformite6" class="conformite"><br>
+                                    <span>Document1</span>
+                                    <a href="http://" class="btn btn-primary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                        </svg>Voir
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -91,11 +94,20 @@
                                 </div>
                             </div>
                         </div>
+                        <span class="alert alert-info">
+                            <strong>Analyst:</strong> Approve
+                        </span>
                     </div>
-                    <button id="checkbtn" class="btn btn-primary" style="margin-bottom: 10px;">Checked the Request</button>
+                    <button id="checkbtn" class="btn btn-primary" style="margin-bottom: 10px;">Checked the Request</button><br>
                     <div id="decision"></div>
-                    <a href="./initiation.php" class="btn btn-danger">Reject</a>
-                    <button type="submit" class="btn btn-success">Send To Analyst</button>
+                    <strong>Opinion:</strong>
+                    <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
+                    <label for="decision">Approved / Rejected</label><br>
+                    <select name="decision" id="decision" class="form-control">
+                        <option value="0">Rejected</option>
+                        <option value="1">Approved</option>
+                    </select><br>
+                    <button type="submit" class="btn btn-success">Submit</button>
                 </form>
             </div>
     </main>

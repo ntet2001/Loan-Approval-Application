@@ -47,7 +47,7 @@
                         <a class="dropdown-item" href="../../loan/evaluation1.php">1st evaluation</a>
                         <a class="dropdown-item" href="../../loan/evaluation2.php">2nd evaluation</a>
                         <a class="dropdown-item" href="../../loan/evaluation3.php">3rd evaluation</a>
-                        <a class="dropdown-item" href="../../loan/manager.php">Manager</a>
+                        <a class="dropdown-item" href="../../loan/manager.php">General Manager</a>
                         <a class="dropdown-item" href="../../loan/comitee.php">Credit commitee</a>
                         <a class="dropdown-item" href="../../loan/creditAdmin.php">Credit administration</a>
                     </div>

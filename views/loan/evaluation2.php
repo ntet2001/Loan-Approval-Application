@@ -14,7 +14,7 @@
 </head>
 <body>
     <main class="container" style="margin-top: 90px;">
-        <h1 style="text-align: center;margin-bottom:20px;">2nd Evaluation Of The Loan Request</h1>
+        <h1 style="text-align: center;margin-bottom:20px;">2nd Evaluation</h1>
             <div class="formulaire" style="margin-bottom: 20px;">
                 <form action="./evaluation2.php" method="post">
                     <div class="row">
@@ -22,7 +22,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <div class="check_1">
-                                    <label for="numClient"><strong>Num Customer</strong></label><br>
+                                    <label for="numClient"><strong>Customer No :</strong></label><br>
                                     <input type="text" name="numClient" id="numClient" class="form-control" disabled>
                                 </div>
                                 <div class="check_2">
@@ -82,6 +82,9 @@
                                 </div>
                             </div>
                         </div>
+                        <span class="alert alert-info">
+                            <strong>Analyst:</strong> Approve
+                        </span>
                     </div>
                     <label for="opinion">Opinion and [Approve/Reject]</label>
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
