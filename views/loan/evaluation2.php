@@ -86,6 +86,20 @@
                             <strong>Analyst:</strong> Approve
                         </span>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4>TO DO CHECK:</h4>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Engineer's report where applicable</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">The treasury plan where applicable</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Authenticated financial statements</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Custormer's character and credit history in and out of the Bank</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Credit/other risks ond their mtigants</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Market or environmental factors</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Going concern of the business</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Risk on the obligor {single obligor limit}</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Financial analysis with emphasis on ratios</label>
+                        </div>
+                    </div>
                     <label for="opinion">Opinion and [Approve/Reject]</label>
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
                     <button type="submit" class="btn btn-success">Send To 3rd Evaluation</button>

@@ -86,6 +86,15 @@
                             <strong>Analyst:</strong> Approve
                         </span>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4>TO DO CHECK:</h4>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">RelationShip with other Banks</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Past performance with the Bank</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Report of any warning signals</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Client business permises and performance</label>
+                        </div>
+                    </div>
                     <label for="opinion">Opinion and [Approve/Reject]</label>
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
                     <button type="submit" class="btn btn-success">Send To 1st Evaluation</button>

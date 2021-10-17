@@ -86,6 +86,17 @@
                             <strong>Analyst:</strong> Approve
                         </span>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4>TO DO CHECK:</h4>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">If the loan is within the Bank's program</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">If all documents are in file</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Frequency of borrowing</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Obligor limit</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">The customers lines of business</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">credit risk appetite</label>
+                        </div>
+                    </div>
                     <label for="opinion">Opinion and [Approve/Reject]</label>
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
                     <button type="submit" class="btn btn-success">Send To 2nd Evaluation</button>

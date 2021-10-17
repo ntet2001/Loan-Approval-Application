@@ -86,6 +86,14 @@
                             <strong>Analyst:</strong> Approve
                         </span>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4>TO DO CHECK:</h4>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Risk appetite/concentration is within the norms</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Proper risk grading has been done for the customer</label><br>
+                            <input type="checkbox" name="todo[]" id="todo"> <label for="todo">Provide an opinion on the risk exposure of the bank both of loan portfolio and single obligor limit.</label><br>
+                        </div>
+                    </div>
                     <label for="opinion">Opinion and [Approve/Reject]</label>
                     <textarea name="opinion" id="opinion" cols="30" rows="10" class="form-control" style="margin-bottom: 20px;"></textarea>
                     <div class="form-group">
