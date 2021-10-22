@@ -1,3 +1,9 @@
+<?php
+    session_start();
+    if ($_SESSION['connecte']!=1) {
+        header('Location: ../login.php');
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,6 +81,7 @@
     </header>
     <!--mon main-->
     <main class="container">
+        <?=var_dump($_SESSION)?>
         <div class="img-fluid">
             <svg class="img-fluid" width="800" height="500" viewBox="0 0 905 587" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="undraw_Online_payments_re_y8f2 1" clip-path="url(#clip0)">

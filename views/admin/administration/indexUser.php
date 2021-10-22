@@ -1,3 +1,40 @@
+<?php
+    //ajout de ma session et du nom de l'utilisateur dans mon loan header
+    session_start();
+    if ($_SESSION['connecte']!=1) {
+        header('Location: ../login.php');
+    }
+    require_once "../../auth_function.php";
+    $erreur=NULL;
+    //fonction qui recupere mes inputs
+    if (!empty($_POST['profile']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
+        //verifie la longueur du mot de passe
+        if(strlen($_POST['password'])!=8 && strlen($_POST['confirmPassword'])!=8){
+            $erreur='<div class="alert alert-danger">Password shall be 08 Characters</div>';
+        }else{
+            //verification des mots de passe et insertion dans la bd
+            if (($_POST['password'])==($_POST['confirmPassword'])) {
+                function getdata(){
+                    $data=[];
+                    $data[0]=$_POST['profile'];
+                    $data[1]=$_POST['password'];
+                    return $data;
+                }
+                $info=getdata();
+                $insert="INSERT INTO [db_gestion_credit].[dbo].[users] ([users_profile],[mdp]) VALUES ('$info[0]','$info[1]');";
+                $resultat=odbc_exec($connexion,$insert);
+                $erreur='<div class="alert alert-success">Profile added</div>';
+               
+            }else{
+                $erreur='<div class="alert alert-danger">Verified your password Confirmation</div>';
+            }
+        }
+    }else{
+        $erreur='<div class="alert alert-danger"> Fill All Inputs</div>';
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,10 +118,11 @@
                         <label for="profile">Profile</label><br>
                         <input type="text" name="profile" id="profile" class="form-control"><br>
                         <label for="password">Password</label><br>
-                        <input type="password" name="password" id="password" class="form-control" value=""><br>
+                        <input type="password" name="password" id="password" class="form-control" maxlength="8"><br>
                         <label for="confirmPassword" class="labelConfirm">Confirm Password</label><br>
-                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" value=""><br>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" maxlength="8"><br>
                         <div id="verification"></div>
+                        <?=$erreur?>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                     <a href="./viewUser.php" class="btn btn-success">

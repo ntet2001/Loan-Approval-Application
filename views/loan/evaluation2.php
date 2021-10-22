@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../dist/css/bootstrap.css">
-    <?php require_once "headerLoan.php";?>
-        <!--call bootstrap javascript-->
-    <script src="../dist/jquery/jquery-3.6.0.min.js"></script>
-    <script src="../dist/js/bootstrap.js"></script>
-    <script src="../dist/js/popper.min.js"></script>
-</head>
+<?php require_once "headerLoan.php";?>
 <body>
     <main class="container" style="margin-top: 90px;">
         <h1 style="text-align: center;margin-bottom:20px;">2nd Evaluation</h1>

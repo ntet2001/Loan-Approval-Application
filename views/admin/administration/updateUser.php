@@ -1,3 +1,62 @@
+<?php
+    //ajout de ma session et du nom de l'utilisateur dans mon loan header
+    session_start();
+    if ($_SESSION['connecte']!=1) {
+        header('Location: ../login.php');
+    }
+    require_once "../../auth_function.php";
+    $erreur=NULL;
+    if (!empty($_GET)) {
+        // je recupere l'id du user pour les modifications par l'url
+        function checkInput($data)
+        {
+            $data=trim($data);
+            $data=stripslashes($data);
+            $data=htmlspecialchars($data);
+            return $data;
+        }
+        $id=checkInput($_GET['id']);
+
+        $select=odbc_exec($connexion,"SELECT [users_profile],[mdp] FROM [db_gestion_credit].[dbo].[users] WHERE [id_users]=$id;");
+        while (odbc_fetch_row($select)){
+            $profileUsers=odbc_result($select,"users_profile");
+            $idmdp=odbc_result($select,"mdp");
+            $user=[];
+            $user[]=$profileUsers;
+            $user[]=$idmdp;
+        }
+        // je teste si les champs sont vides
+        if(!empty($_POST['profile']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])){
+            //je teste la taille des mots de passe
+            if (strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8) {
+                //je verifie les mots de passe
+               if ($_POST['password']== $_POST['confirmPassword']) {
+                   //je modifie dans la bd
+                   function getdata(){
+                    $data=[];
+                    $data[0]=$_POST['profile'];
+                    $data[1]=$_POST['password'];
+                    return $data;
+                    }
+                    $info=getdata();
+                    $update="UPDATE users SET users_profile='$info[0]', mdp='$info[1]' WHERE id_users='$id';";
+                    $resultat=odbc_exec($connexion,$update);
+                    header('Location: ./viewUser.php');
+               }else{
+                $erreur='<div class="alert alert-danger">Enter the same Password</div>';
+               }
+            }else{
+                $erreur='<div class="alert alert-danger">Password Shall Be 08 Characters</div>';
+            }
+
+        }else{
+            $erreur='<div class="alert alert-warning">Fill All The Inputs</div>';
+        }
+        
+    }
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,15 +85,16 @@
         <h1>Change User Password </h1>
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="updateUser.php" method="post">
+                <form action="<?='updateUser.php?id='.$id?>" method="post">
                     <div class="form-group">
-                        <label for="profile">Profile</label><br>
-                        <input type="text" name="profile" id="profile" class="form-control"><br>
-                        <label for="password">Password</label><br>
-                        <input type="password" name="password" id="password" class="form-control"><br>
-                        <label for="confirmPassword">Confirm Password</label><br>
-                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+                            <label for="profile">Profile</label><br>
+                            <input type="text" name="profile" id="profile" class="form-control" value="<?=$user[0]?>"><br>
+                            <label for="password">Password</label><br>
+                            <input type="password" name="password" id="password" class="form-control" value="<?=$user[1]?>" maxlength="8"><br>
+                            <label for="confirmPassword">Confirm Password</label><br>
+                            <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" value="<?=$user[1]?>" maxlength="8">
                     </div>
+                    <?=$erreur?>
                     <div id="verification"></div>
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
