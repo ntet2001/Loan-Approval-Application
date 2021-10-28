@@ -1,59 +1,5 @@
 <?php
     //ajout de ma session et du nom de l'utilisateur dans mon loan header
-    session_start();
-    if ($_SESSION['connecte']!=1) {
-        header('Location: ../../login.php');
-    }
-    require_once "../../auth_function.php";
-    $erreur=NULL;
-    if (!empty($_GET)) {
-        // je recupere l'id du user pour les modifications par l'url
-        function checkInput($data)
-        {
-            $data=trim($data);
-            $data=stripslashes($data);
-            $data=htmlspecialchars($data);
-            return $data;
-        }
-        $id=checkInput($_GET['id']);
-
-        $select=odbc_exec($connexion,"SELECT [users_profile],[mdp] FROM [db_gestion_credit].[dbo].[users] WHERE [id_users]=$id;");
-        while (odbc_fetch_row($select)){
-            $profileUsers=odbc_result($select,"users_profile");
-            $idmdp=odbc_result($select,"mdp");
-            $user=[];
-            $user[]=$profileUsers;
-            $user[]=$idmdp;
-        }
-        // je teste si les champs sont vides
-        if(!empty($_POST['profile']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])){
-            //je teste la taille des mots de passe
-            if (strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8) {
-                //je verifie les mots de passe
-               if ($_POST['password']== $_POST['confirmPassword']) {
-                   //je modifie dans la bd
-                   function getdata(){
-                    $data=[];
-                    $data[0]=$_POST['profile'];
-                    $data[1]=$_POST['password'];
-                    return $data;
-                    }
-                    $info=getdata();
-                    $update="UPDATE users SET users_profile='$info[0]', mdp='$info[1]' WHERE id_users='$id';";
-                    $resultat=odbc_exec($connexion,$update);
-                    header('Location: ./viewUser.php');
-               }else{
-                $erreur='<div class="alert alert-danger">Enter the same Password</div>';
-               }
-            }else{
-                $erreur='<div class="alert alert-danger">Password Shall Be 08 Characters</div>';
-            }
-
-        }else{
-            $erreur='<div class="alert alert-warning">Fill All The Inputs</div>';
-        }
-        
-    }
     
 ?>
 
@@ -65,12 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!--link call bootstrap css-->
-    <link rel="stylesheet" href="../../dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../connexion/headerAdmin/headerAdmin.css">
         <!--call bootstrap javascript-->
-    <script src="../../dist/jquery/jquery-3.6.0.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script src="../../dist/js/popper.min.js"></script>
+    <script src="../dist/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../dist/js/bootstrap.js"></script>
+    <script src="../dist/js/popper.min.js"></script>
     <!---script pour verification du mot de passe-->
     <script src="./user.js" defer></script>
 </head>
@@ -82,25 +28,34 @@
             </svg> Back
         </a>
 
-        <h1>Change User Password </h1>
+        <h1>Update User Informations</h1>
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="<?='updateUser.php?id='.$id?>" method="post">
+                <form action="updateUser.php" method="post">
                     <div class="form-group">
-                            <label for="profile">Profile</label><br>
-                            <input type="text" name="profile" id="profile" class="form-control" value="<?=$user[0]?>"><br>
-                            <label for="password">Password</label><br>
-                            <input type="password" name="password" id="password" class="form-control" value="<?=$user[1]?>" maxlength="8"><br>
-                            <label for="confirmPassword">Confirm Password</label><br>
-                            <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" value="<?=$user[1]?>" maxlength="8">
+                    <label for="nom">Name:</label><br>
+                        <input type="text" name="nom" id="nom" class="form-control">
+                        <label for="profile">Profile:</label><br>
+                        <select name="profile" id="profile"  class="form-control">
+
+                        </select>
+                        <label for="agence">Agency:</label><br>
+                        <select name="agence" id="agence"  class="form-control">
+                            
+                        </select>
+                        <label for="password">Password:</label><br>
+                        <input type="password" name="password" id="password" class="form-control" maxlength="8">
+                        <label for="confirmPassword" class="labelConfirm">Confirm Password:</label><br>
+                        <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" maxlength="8"><br>
+                        <span id="verification"></span>
                     </div>
-                    <?=$erreur?>
                     <div id="verification"></div>
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
                             <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                        </svg> Change Password
+                        </svg> Change User Info
                     </button>
+                    <button type="submit" class="btn btn-danger">Delete User</button>
                 </form>
             </div>
             <div class="col-lg-5">

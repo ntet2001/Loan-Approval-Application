@@ -1,11 +1,5 @@
 <?php
-    session_start();
-    //ajout de ma session et du nom de l'utilisateur dans mon loan header
-    if ($_SESSION['connecte']!=1) {
-        header('Location: ../../login.php');
-    }
-    require_once '../../auth_function.php';
-    $select=odbc_exec($connexion,"SELECT  [id_users],[users_profile] FROM [db_gestion_credit].[dbo].[users];");
+    
 ?>
 
 <!DOCTYPE html>
@@ -16,15 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!--link call bootstrap css-->
-    <link rel="stylesheet" href="../../dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../../dist/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../dist/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../connexion/headerAdmin/headerAdmin.css">
         <!--call bootstrap javascript-->
-    <script src="../../dist/jquery/jquery-3.6.0.min.js"></script>
-    <script src="../../dist/jquery/jquery.dataTables.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script src="../../dist/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../../dist/js/popper.min.js"></script>
+    <script src="../dist/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../dist/jquery/jquery.dataTables.min.js"></script>
+    <script src="../dist/js/bootstrap.js"></script>
+    <script src="../dist/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../dist/js/popper.min.js"></script>
     <script defer>
         $(document).ready(function() {
             $('#example').DataTable();
@@ -44,29 +38,30 @@
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Username</th>
                             <th>Profile</th>
+                            <th>Agency</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while (odbc_fetch_row($select)):?>
-                            <?php $idUsers=odbc_result($select,"id_users");?>
-                            <?php $profileUsers=odbc_result($select,"users_profile");?>
-                            <tr>
-                                <td><?=$idUsers?></td>
-                                <td><?=$profileUsers?></td>
-                                <td>
-                                    <a href="<?php echo './updateUser.php?id='.$idUsers;?>" class="btn btn-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
-                                            <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                                        </svg> Change Password
-                                    </a>
-                                </td>
-                            </tr>   
-                        <?php endwhile?>
-                        <?php odbc_close($connexion);?>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <a href="./updateUser.php" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
+                                        <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                    </svg> Change User Info
+                                </a>
+                            </td>
+                        </tr>   
                     </tbody>
-                </table>        
+                </table>
+            </div>        
+        </div>        
     </main>
 </body>
 </html>

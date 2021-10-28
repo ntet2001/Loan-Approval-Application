@@ -1,37 +1,5 @@
 <?php
     //ajout de ma session et du nom de l'utilisateur dans mon loan header
-    session_start();
-    if ($_SESSION['connecte']!=1) {
-        header('Location: ../../login.php');
-    }
-    require_once "../../auth_function.php";
-    $erreur=NULL;
-    //fonction qui recupere mes inputs
-    if (!empty($_POST['profile']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
-        //verifie la longueur du mot de passe
-        if(strlen($_POST['password'])!=8 && strlen($_POST['confirmPassword'])!=8){
-            $erreur='<div class="alert alert-danger">Password shall be 08 Characters</div>';
-        }else{
-            //verification des mots de passe et insertion dans la bd
-            if (($_POST['password'])==($_POST['confirmPassword'])) {
-                function getdata(){
-                    $data=[];
-                    $data[0]=$_POST['profile'];
-                    $data[1]=$_POST['password'];
-                    return $data;
-                }
-                $info=getdata();
-                $insert="INSERT INTO [db_gestion_credit].[dbo].[users] ([users_profile],[mdp]) VALUES ('$info[0]','$info[1]');";
-                $resultat=odbc_exec($connexion,$insert);
-                $erreur='<div class="alert alert-success">Profile added</div>';
-               
-            }else{
-                $erreur='<div class="alert alert-danger">Verified your password Confirmation</div>';
-            }
-        }
-    }else{
-        $erreur='<div class="alert alert-danger"> Fill All Inputs</div>';
-    }
 
 ?>
 
@@ -43,12 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!--link call bootstrap css-->
-    <link rel="stylesheet" href="../../dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../connexion/headerAdmin/headerAdmin.css">
         <!--call bootstrap javascript-->
-    <script src="../../dist/jquery/jquery-3.6.0.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script src="../../dist/js/popper.min.js"></script>
+    <script src="../dist/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../dist/js/bootstrap.js"></script>
+    <script src="../dist/js/popper.min.js"></script>
     <!---script pour verification du mot de passe-->
     <script src="./user.js" defer></script>
 </head>
@@ -57,54 +25,20 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
             <div class="container-fluid">
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#monMenu">
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#monMenu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <!--dropdown pour fichier-->
                 <div class="collapse navbar-collapse" id="monMenu">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Files</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="../fichier/reseau/indexReseau.php">Network</a>
-                        <a class="dropdown-item" href="../fichier/section/indexSection.php">Section</a>
-                        <a class="dropdown-item" href="../fichier/pole/indexPole.php">Pole</a>
-                        <a class="dropdown-item" href="../fichier/agence/indexAgence.php">Agency</a>
-                        <a class="dropdown-item" href="../fichier/document/indexDocument.php">Documents</a>
-                        <a class="dropdown-item" href="../fichier/client/indexClient.php">Customers</a>
-                        <a class="dropdown-item" href="../fichier/typePret/indexType.php">Type Loan</a>
-                        <a class="dropdown-item" href="../fichier/butPret/indexbut.php">Purpose Loan</a>
-                        <a class="dropdown-item" href="../fichier/naturePret/indexNature.php">Nature Loan</a>
-                    </div>
-                </li>
-                 <!--dropdown pour traitement-->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Traitment</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="../../loan/initiation.php">Initiation</a>
-                        <a class="dropdown-item" href="../../loan/indexConformite.php">Confirmation</a>
-                        <a class="dropdown-item" href="../../loan/analyse.php">Analyze</a>
-                        <a class="dropdown-item" href="../../loan/evaluation1.php">1st evaluation</a>
-                        <a class="dropdown-item" href="../../loan/evaluation2.php">2nd evaluation</a>
-                        <a class="dropdown-item" href="../../loan/evaluation3.php">3rd evaluation</a>
-                        <a class="dropdown-item" href="../../loan/manager.php">General Manager</a>
-                        <a class="dropdown-item" href="../../loan/comitee.php">Credit commitee</a>
-                        <a class="dropdown-item" href="../../loan/creditAdmin.php">Credit administration</a>
-                    </div>
-                </li>
-                 <!--autres liens-->
-                <li class="nav-item"><a href="../consultation/indexConsultation.php" class="nav-link">Consultation</a></li>
-                <li class="nav-item"><a href="../analyse/indexAnalyse.php" class="nav-link">Analyzies</a></li>
-                <li class="nav-item"><a href="../outils/indexOutils.php" class="nav-link">Tools</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Administration</a></li>
-                <li class="nav-item">
-                    <a href="../../deconnexion.php" class="nav-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
-                            <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-                        </svg>Log Out 
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="../../deconnexion.php" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                                <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                            </svg>Log Out 
+                        </a>
+                    </li>
                 </div>
             </div>
         </nav>
@@ -113,16 +47,24 @@
         <h1 style="margin-bottom: 20px;">Register User </h1>
         <div class="row formulaire">
             <div class="col-lg-6">
+                <!-- mon formulaire pour les users  -->
                 <form action="indexUser.php" method="post">
                     <div class="form-group" id='divVerification'>
-                        <label for="profile">Profile</label><br>
-                        <input type="text" name="profile" id="profile" class="form-control"><br>
-                        <label for="password">Password</label><br>
-                        <input type="password" name="password" id="password" class="form-control" maxlength="8"><br>
-                        <label for="confirmPassword" class="labelConfirm">Confirm Password</label><br>
+                        <label for="nom">Name:</label><br>
+                        <input type="text" name="nom" id="nom" class="form-control">
+                        <label for="profile">Profile:</label><br>
+                        <select name="profile" id="profile"  class="form-control">
+
+                        </select>
+                        <label for="agence">Agency:</label><br>
+                        <select name="agence" id="agence"  class="form-control">
+                            
+                        </select>
+                        <label for="password">Password:</label><br>
+                        <input type="password" name="password" id="password" class="form-control" maxlength="8">
+                        <label for="confirmPassword" class="labelConfirm">Confirm Password:</label><br>
                         <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" maxlength="8"><br>
-                        <div id="verification"></div>
-                        <?=$erreur?>
+                        <span id="verification"></span><br>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                     <a href="./viewUser.php" class="btn btn-success">

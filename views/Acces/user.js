@@ -10,10 +10,10 @@ let verification=document.getElementById('verification');
  */
 function verificationmdp() {
     if(password.value==confirmation.value){
-        verification.className='alert alert-success';
+        verification.style.color='green';
         verification.textContent='password is Confirmed';
     }else{
-        verification.className='alert alert-danger';
+        verification.style.color='red';
         verification.textContent='Enter the same Password';
     }
 }

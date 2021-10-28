@@ -16,7 +16,7 @@
             <h1>GET STARTED</h1>
             <h1>WITH</h1>
             <h2>Your Loan application</h2>
-            <a href="./views/login.php" class="btn btn-primary btn-md">START NOW</a>
+            <a href="./views/connexion/login.php" class="btn btn-primary btn-md">START NOW</a>
         </div>
     </div>
 </body>

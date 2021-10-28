@@ -1,5 +1,5 @@
-#body{
-    height: 100%;
+body{
+    height: auto;
     display: flex;
     justify-content: center;
     align-self: center;
@@ -14,4 +14,8 @@ h1{
     background-color: #ffff;
     padding: 100px;
     border-radius: 6px;
+}
+/* style sur ma div container  */
+.container-fluid{
+    height: auto;
 }
