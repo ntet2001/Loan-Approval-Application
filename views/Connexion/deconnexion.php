@@ -1,8 +1,5 @@
 <?php
-    session_start();
-    session_unset();
-    session_destroy();
-    header('Location: ./login.php');
-    exit();
-
+     require_once "../Fonction/auth_function.php";
+     ajoutsession();
+     retirersession($_SESSION);
 ?>

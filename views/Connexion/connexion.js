@@ -8,6 +8,6 @@ password.addEventListener('input',function (e) {
         verificationmdp.textContent='Password is OK';
     }else{
         verificationmdp.className='alert alert-warning';
-        verificationmdp.textContent='08 characters are Required';
+        verificationmdp.textContent='08 characters are Required for the password';
     }
 },false);
