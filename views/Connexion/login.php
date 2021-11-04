@@ -37,6 +37,8 @@
                 while (odbc_fetch_row($resultat)) {
                     $_SESSION['id']=odbc_result($resultat,'id_user');
                 }
+                //ferme la connexion
+                finconnexion();
                 $_SESSION['agence']=$user[0];
                 $_SESSION['profil']=$user[1];
                 $_SESSION['nom']=$user[3];

@@ -1,6 +1,49 @@
 <?php
-    //ajout de ma session et du nom de l'utilisateur dans mon loan header
+    //ajout de ma session  et test sur le user est connecte
+    require_once "../Fonction/auth_function.php";
+    ajoutsession();
+    if($_SESSION['connecte'] != 1){
+        header('Location: ../connexion/login.php');
+    }
+    $connexion=connexion();
+    $erreur=NULL;
 
+    //je charge les champs select
+    $queryAgence="SELECT id_agence,nom_agence FROM agence";
+    $queryProfil="SELECT id_profil,nom_profil FROM profil";
+    $selectAgence=odbc_exec($connexion,$queryAgence);
+    $selectProfil=odbc_exec($connexion,$queryProfil);
+
+    //on verifie que les champs sont non vides
+    if (!empty($_POST['nom']) && !empty($_POST['profil']) && !empty($_POST['agence']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
+        //on verifie la taille du mot de passe
+       if(strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8){
+           // je verifie que confirm password est egale a password
+            if ($_POST['password'] == $_POST['confirmPassword']) {
+               //insere les donnees
+                $data=[];
+                $data[0]=$_POST['nom'];
+                $data[1]=$_POST['password'];
+                $data[2]=$_POST['agence'];
+                $data[3]=$_POST['profil'];
+                $queryinsert="INSERT INTO users (nom_user,mdp,id_agence,id_profil) 
+                VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+                $insert=odbc_exec($connexion,$queryinsert);
+                // ferme la connexion
+                finconnexion();
+                $erreur='<span style="color:green;">insert successful <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg></span>';
+
+            }else{
+                $erreur='<div class="alert alert-danger">confirm password shall be the same as password</div>'; 
+            }
+       }else{
+           $erreur='<div class="alert alert-danger">08 characters are Required for the password</div>';
+       }
+    }else{
+        $erreur='<div class="alert alert-danger">Fill All the Inputs</div>';
+    }   
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +75,7 @@
                 <!--dropdown pour fichier-->
                 <div class="collapse navbar-collapse" id="monMenu">
                     <li class="nav-item">
-                        <a href="../../deconnexion.php" class="nav-link">
+                        <a href="../connexion/deconnexion.php" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
                                 <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
@@ -52,19 +95,35 @@
                     <div class="form-group" id='divVerification'>
                         <label for="nom">Name:</label><br>
                         <input type="text" name="nom" id="nom" class="form-control">
-                        <label for="profile">Profile:</label><br>
-                        <select name="profile" id="profile"  class="form-control">
-
+                        <label for="profil">Profile:</label><br>
+                        <select name="profil" id="profil"  class="form-control">
+                             <!-- j'affiche les differents profils -->
+                             <?php while(odbc_fetch_row($selectProfil)):?>
+                                <?php
+                                    $idprofil=odbc_result($selectProfil,'id_profil');
+                                    $nomprofil=odbc_result($selectProfil,'nom_profil');    
+                                ?>
+                                <option value="<?=$idprofil;?>"><?=$nomprofil;?></option>
+                            <?php endwhile;?>  
                         </select>
                         <label for="agence">Agency:</label><br>
                         <select name="agence" id="agence"  class="form-control">
-                            
+                            <!-- j'affiche les differents agences -->
+                            <?php while(odbc_fetch_row( $selectAgence)):?>
+                                <?php
+                                    $idagence=odbc_result($selectAgence,'id_agence');
+                                    $nomagence=odbc_result($selectAgence,'nom_agence');    
+                                ?>
+                                <option value="<?=$idagence;?>"><?=$nomagence;?></option>
+                            <?php endwhile;?> 
                         </select>
                         <label for="password">Password:</label><br>
                         <input type="password" name="password" id="password" class="form-control" maxlength="8">
                         <label for="confirmPassword" class="labelConfirm">Confirm Password:</label><br>
                         <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" maxlength="8"><br>
+                        <!-- message de verification des champs -->
                         <span id="verification"></span><br>
+                        <?=$erreur?>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                     <a href="./viewUser.php" class="btn btn-success">
