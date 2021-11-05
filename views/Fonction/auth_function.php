@@ -15,7 +15,7 @@
         }   
     }  
     
-    //fonction de fermeture de la colonne
+    //fonction de fermeture de la connexion
     function finconnexion()
     {
         odbc_close(connexion());
@@ -34,4 +34,20 @@
         exit();
     }
 
+    // fonction pour verifier si l'utilisateur est connecte
+    function estconnecte(){
+        if($_SESSION['connecte'] != 1){
+            header('Location: ../connexion/login.php');
+        }
+    }
+
+    // fonction pour verifier id passer par l'url
+    function checkinput($data){
+        $data=trim($data);
+        $data=stripslashes($data);
+        $data=htmlspecialchars($data);
+        return $data;
+    }
+
+    
 ?>

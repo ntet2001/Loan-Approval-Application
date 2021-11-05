@@ -1,6 +1,60 @@
 <?php
     //ajout de ma session et du nom de l'utilisateur dans mon loan header
-    
+    require_once "../Fonction/auth_function.php";
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=NULL;
+
+    if(!empty($_GET['id'])){
+        $id=checkInput($_GET['id']);
+    }
+
+    //charge dans les inputs profil et agence
+    $connexion=connexion();
+    $erreur=NULL;
+    $queryAgence="SELECT id_agence,nom_agence FROM agence";
+    $queryProfil="SELECT id_profil,nom_profil FROM profil";
+    $selectAgence=odbc_exec($connexion,$queryAgence);
+    $selectProfil=odbc_exec($connexion,$queryProfil);
+
+    //charge dans les inputs lies a l'id
+    $queryId="SELECT nom_user,mdp,id_agence,id_profil FROM users WHERE id_user='$id'";
+    $selectUser=odbc_exec($connexion,$queryId);
+
+    if (isset($_POST['update'])) {
+        if (!empty($_POST['nom']) && !empty($_POST['profil']) && !empty($_POST['agence']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
+            if (strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8) {
+                if ($_POST['password'] == $_POST['confirmPassword']) {
+                    $data=[];
+                    $data[0]=$_POST['nom'];
+                    $data[1]=$_POST['password'];
+                    $data[2]=$_POST['agence'];
+                    $data[3]=$_POST['profil'];
+                    // modification et suppression de donnees
+                    //on verifie que les champs sont non vides
+                    // modification des donnees
+                    $queryUpdate="UPDATE users 
+                    SET nom_user='$data[0]',mdp='$data[1]',id_agence='$data[2]',id_profil='$data[3]'
+                    WHERE id_user='$id'";
+                    $queryUpdate=odbc_exec($connexion,$queryUpdate);
+                    header('Location: ./viewUser.php');   
+                }else{
+                    $erreur='<div class="alert alert-danger">confirm password shall be the same as password</div>'; 
+                }
+            }else{
+                $erreur='<div class="alert alert-danger">08 characters are Required for the password</div>';
+            }
+        }else{
+            $erreur='<div class="alert alert-danger">Fill All the Inputs</div>';
+        }          
+    }
+
+    if (isset($_POST['delete'])) {
+        $queryDelete="DELETE FROM users WHERE id_user='$id'";
+        $queryDelete=odbc_exec($connexion,$queryDelete);
+        header('Location: ./viewUser.php');    
+    }
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +72,6 @@
     <script src="../dist/js/bootstrap.js"></script>
     <script src="../dist/js/popper.min.js"></script>
     <!---script pour verification du mot de passe-->
-    <script src="./user.js" defer></script>
 </head>
 <body>
     <main class="container" style="margin-top: 100px;">
@@ -31,17 +84,51 @@
         <h1>Update User Informations</h1>
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="updateUser.php" method="post">
+                <form action="<?='updateUser.php?id='.$id?>" method="post">
                     <div class="form-group">
-                    <label for="nom">Name:</label><br>
-                        <input type="text" name="nom" id="nom" class="form-control">
-                        <label for="profile">Profile:</label><br>
-                        <select name="profile" id="profile"  class="form-control">
-
+                        <label for="nom">Name:</label><br>
+                        <!-- j'affiche le nom de l'utilisateur -->
+                        <?php while(odbc_fetch_row($selectUser)):?>
+                            <?php
+                                $nomUser=odbc_result($selectUser,'nom_user');
+                                $profilUser=odbc_result($selectUser,'id_profil');   
+                                $agenceUser=odbc_result($selectUser,'id_agence');         
+                            ?>
+                        <?php endwhile;?>
+                        <input type="text" name="nom" id="nom" class="form-control" value="<?=htmlentities($nomUser)?>">
+                        <label for="profil">Profile:</label><br>
+                        <select name="profil" id="profil"  class="form-control">
+                            <!-- j'affiche les differents profils -->
+                            <!-- je selectionne le profil recuperer -->
+                            <?php while(odbc_fetch_row($selectProfil)):?>
+                                <?php $attribute=null;?>
+                                <?php
+                                    $idprofil=odbc_result($selectProfil,'id_profil');
+                                    $nomprofil=odbc_result($selectProfil,'nom_profil');    
+                                ?>
+                                <?php if($profilUser == $idprofil)
+                                    $attribute = "selected='selected'";
+                                ?>
+                                <option value="<?=$idprofil;?>" <?=$attribute?> > <?=$nomprofil;?> </option>;
+                            <?php endwhile;?> 
                         </select>
                         <label for="agence">Agency:</label><br>
                         <select name="agence" id="agence"  class="form-control">
-                            
+                            <!-- j'affiche les differents agences -->
+                            <!-- je selectionne le profil recuperer -->
+                            <?php while(odbc_fetch_row( $selectAgence)):?>
+                                <?php $attribute1=null;?>
+                                <?php
+                                    $idagence=odbc_result($selectAgence,'id_agence');
+                                    $nomagence=odbc_result($selectAgence,'nom_agence');    
+                                ?>
+                                <?php 
+                                    if($agenceUser == $idagence){
+                                        $attribute1 = "selected='selected'";
+                                    }
+                                ?>
+                                <option value="<?=$idagence;?>" <?=$attribute1;?> > <?=$nomagence;?> </option>
+                            <?php endwhile;?> 
                         </select>
                         <label for="password">Password:</label><br>
                         <input type="password" name="password" id="password" class="form-control" maxlength="8">
@@ -50,12 +137,13 @@
                         <span id="verification"></span>
                     </div>
                     <div id="verification"></div>
-                    <button type="submit" class="btn btn-primary">
+                    <?=$erreur;  finconnexion();?><br>
+                    <button type="submit" class="btn btn-primary" name="update">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
                             <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                         </svg> Change User Info
                     </button>
-                    <button type="submit" class="btn btn-danger">Delete User</button>
+                    <button type="submit" class="btn btn-danger" name="delete">Delete User</button>
                 </form>
             </div>
             <div class="col-lg-5">
@@ -63,5 +151,6 @@
             </div>
         </div>      
     </main>
+    <script src="./user.js" defer></script>
 </body>
 </html>

@@ -2,9 +2,7 @@
     //ajout de ma session  et test sur le user est connecte
     require_once "../Fonction/auth_function.php";
     ajoutsession();
-    if($_SESSION['connecte'] != 1){
-        header('Location: ../connexion/login.php');
-    }
+    estconnecte();
     $connexion=connexion();
     $erreur=NULL;
 
