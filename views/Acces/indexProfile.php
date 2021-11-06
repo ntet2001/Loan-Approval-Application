@@ -1,5 +1,23 @@
 <?php
-  
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+
+    $queryProfil="SELECT id_profil,nom_profil FROM profil";
+    $selectProfil=odbc_exec($connexion,$queryProfil);
+
+    //ici je recupere le nouveau profil a inserer
+    if (!empty($_POST['profil'])) {
+       $profil=$_POST['profil'];
+       $queryinsert="INSERT INTO profil (nom_profil) VALUES('$profil')";
+       $insert=odbc_exec($connexion,$queryinsert);
+       $erreur='<span style="color:green;">Insert succesfull!</span>';
+    }else{
+        $erreur='<span style="color:red;">Fill All the Inputs!</span>';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +52,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="monMenu">
                     <li class="nav-item">
-                        <a href="../../../deconnexion.php" class="nav-link">
+                        <a href="../Connexion/deconnexion.php" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
                                 <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
@@ -52,11 +70,13 @@
             <div class="col-lg-6">
                 <form action="indexProfile.php" method="post">
                     <div class="form-group">
-                        <label for="profile"><h3>Enter Profile</h3></label><br>
-                        <input type="text" name="profile" id="profile" class="form-control" placeholder="Profile">
+                        <label for="profil"><h3>Enter Profile</h3></label><br>
+                        <input type="text" name="profil" id="profil" class="form-control" placeholder="Profile">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="reset" class="btn btn-primary">Reset</button>
+                    <button type="reset" class="btn btn-primary">Reset</button><br>
+                    <!-- //message d'erreur -->
+                    <?=$erreur?>
                 </form>
             </div>
             <div class="col-lg-4">
@@ -76,16 +96,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- j'affiche les differents profils -->
+                        <?php while(odbc_fetch_row($selectProfil)):?>
+                            <?php
+                                $idprofil=odbc_result($selectProfil,'id_profil');
+                                $nomprofil=odbc_result($selectProfil,'nom_profil');    
+                            ?>
                         <tr>
-                            <td></td>
-                            <td></td>
+                            <td><?=$idprofil?></td>
+                            <td><?=$nomprofil?></td>
                             <td>
-                                <a href="" class="btn btn-warning">
+                                <a href="<?='updateProfile?id='.$idprofil?>" class="btn btn-warning">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                                     </svg> Modify
                                 </a> 
-                                <a href="" class="btn btn-danger">
+                                <a href="<?='deleteProfile?id='.$idprofil?>" class="btn btn-danger">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -93,6 +119,9 @@
                                 </a>
                             </td>
                         </tr>
+                        <?php endwhile;?> 
+                        <!-- //ferme la connexion a la bd -->
+                        <?php finconnexion(); ?>
                     </tbody>
                 </table>
             </div>
