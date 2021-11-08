@@ -1,5 +1,29 @@
 <?php
-  
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+
+    //je verifie l'id passer par l'url
+    if (!empty($_GET['id'])) {
+    $id=checkInput($_GET['id']);
+    }
+
+    //j'affiche le nom du profil recuperer
+    $querySelect="SELECT nom_menu FROM menu WHERE id_menu='$id'";
+    $select=odbc_exec($connexion,$querySelect);
+
+    //j'update les donnees
+    if (!empty($_POST['menu'])) {
+        $menu=$_POST['menu'];
+        $queryUpdate="UPDATE menu SET nom_menu='$menu' WHERE id_menu='$id'";
+        $update=odbc_exec($connexion,$queryUpdate);
+        header('Location: ./indexMenu.php');
+    }else{
+        $erreur='<span style="color:red;">Fill All the Inputs!</span>';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,18 +45,27 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="updateMenu.php" method="post">
+                <form action="<?='updateMenu.php?id='.$id?>" method="post">
                     <h1>Modified the Menu</h1><br>
                     <div class="form-group">
                         <label for="menu"><h3>Menu Name:</h3></label><br>
-                        <input type="text" name="menu" id="menu" class="form-control" placeholder="Name">
+                         <!-- j'affiche le menu recuperer -->
+                         <?php while(odbc_fetch_row($select)):?>
+                            <?php
+                                $nomMenu=odbc_result($select,'nom_menu');    
+                            ?>
+                        <input type="text" name="menu" id="menu" class="form-control" placeholder="Name" value="<?=htmlentities($nomMenu)?>">
+                        <?php endwhile;?>
+                        <!-- ferme la connexion -->
+                        <?php finconnexion();?>
                     </div>
-                    <a href="" class="btn btn-primary">Back</a>
+                    <a href="./indexMenu.php" class="btn btn-primary">Back</a>
                     <button type="submit" class="btn btn-success">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                         </svg> Modified
-                    </button>
+                    </button><br>
+                    <?=$erreur?>
                 </form>
             </div>
             <div class="col-lg-6">

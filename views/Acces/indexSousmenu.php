@@ -1,5 +1,39 @@
 <?php
-  
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+    
+    // je recupere ici la liste des menus
+    $queryMenu="SELECT id_menu, nom_menu FROM menu ";
+    $selectMenu=odbc_exec($connexion,$queryMenu);
+
+    // je recupere ici la liste des sous-menus
+    $querySm="SELECT id_sousMenu, nom_sousMenu FROM sousMenu ";
+    $selectSm=odbc_exec($connexion,$querySm);
+
+    //je charge le tableau des sous menus
+    $querySousMenu="SELECT sousMenu.id_sousMenu,sousMenu.nom_sousMenu,menu.nom_menu
+    FROM sousMenu
+    INNER JOIN menu
+    ON sousMenu.id_menu=menu.id_menu";
+    $selectSousMenu=odbc_exec($connexion,$querySousMenu);
+
+    //insertion d'un nouveau sous-menu
+    //ici je recupere le nouveau profil a inserer
+    if (!empty($_POST['sousMenu']) && !empty($_POST['menu'])) {
+        $array=[];
+        $array[0]=$_POST['sousMenu'];
+        $array[1]=$_POST['menu'];
+        $queryinsert="INSERT INTO sousMenu (nom_sousMenu,id_menu) 
+        VALUES ('$array[0]','$array[1]');";
+        $insert=odbc_exec($connexion,$queryinsert);
+        header('Location: ./indexSousmenu.php');
+    }else{
+        $erreur='<span style="color:red;">Fill All the Inputs!</span>';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,12 +87,31 @@
                 <form action="indexSousmenu.php" method="post">
                     <div class="form-group">
                         <label for="sousMenu">Enter Sub Menu</label><br>
-                        <input type="text" name="sousMenu" id="sousMenu" class="form-control" placeholder="Sub menu">
+                        <select name="sousMenu" id="sousMenu" class="form-control">
+                            <!-- j'affiche les differents sous menus -->
+                            <?php while(odbc_fetch_row($selectSm)):?>
+                                <?php
+                                    $sousMenuId=odbc_result($selectSm,'id_sousMenu');
+                                    $sousMenuNom=odbc_result($selectSm,'nom_sousMenu');    
+                                ?>
+                                <option value="<?=$sousMenuId?>"><?=$sousMenuNom?></option>
+                            <?php endwhile;?> 
+                        </select>
                         <label for="menu">Choose Menu</label><br>
-                        <select name="menu" id="menu" class="form-control"></select>
+                        <select name="menu" id="menu" class="form-control">
+                            <!-- j'affiche les differents menus -->
+                            <?php while(odbc_fetch_row($selectMenu)):?>
+                                <?php
+                                    $idMenu=odbc_result($selectMenu,'id_menu');
+                                    $nomMenu=odbc_result($selectMenu,'nom_menu');    
+                                ?>
+                                <option value="<?=$idMenu?>"><?=$nomMenu?></option>
+                            <?php endwhile;?> 
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-primary">Reset</button>
+                    <?=$erreur?>
                 </form>
             </div>
             <div class="col-lg-4">
@@ -79,24 +132,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <a href="" class="btn btn-warning">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                    </svg> Modify
-                                </a> 
-                                <a href="" class="btn btn-danger">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                                    </svg> Delete
-                                </a>
-                            </td>
-                        </tr>
+                        <!-- j'affiche les differents sous-menus dans le tableau -->
+                        <?php while(odbc_fetch_row($selectSousMenu)):?>
+                            <?php
+                                $idSousMenu=odbc_result($selectSousMenu,'id_sousMenu');
+                                $nomSousMenu=odbc_result($selectSousMenu,'nom_sousMenu'); 
+                                $menu=odbc_result($selectSousMenu,'nom_menu');   
+                            ?>
+                            <tr>
+                                <td><?=$idSousMenu?></td>
+                                <td><?=$nomSousMenu?></td>
+                                <td><?=$menu?></td>
+                                <td>
+                                    <a href="<?='updateSousmenu.php?id='.$idSousMenu?>" class="btn btn-warning">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                        </svg> Modify
+                                    </a> 
+                                    <a href="<?='deleteSousmenu.php?id='.$idSousMenu?>" class="btn btn-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                        </svg> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endwhile;?>
+                        <!-- //ferme la connexion a la bd -->
+                        <?php finconnexion(); ?> 
                     </tbody>
                 </table>
             </div>

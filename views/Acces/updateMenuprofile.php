@@ -1,5 +1,38 @@
 <?php
-  
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+
+    //je verifie l'id passer par l'url
+    if (!empty($_GET['id'])) {
+    $id=checkInput($_GET['id']);
+    }
+
+    // je recupere ici la liste des menus
+    $queryMenu="SELECT id_menu, nom_menu FROM menu ";
+    $selectMenu=odbc_exec($connexion,$queryMenu);
+
+    //je recupere ici la liste des profils
+    $queryProfil="SELECT id_profil,nom_profil FROM profil";
+    $selectProfil=odbc_exec($connexion,$queryProfil);
+
+    //info liees a l'id
+    $queryId="SELECT id_profil, id_menu FROM profil_menu WHERE id='$id'";
+    $selectId=odbc_exec($connexion,$queryId);
+
+    //requete d'update
+    if (isset($_POST['profil']) && isset($_POST['menu'])) {
+        $data=[];
+        $data[0]=$_POST['profil'];
+        $data[1]=$_POST['menu'];
+        $queryUpdate="UPDATE profil_menu SET id_profil='$data[0]', id_menu='$data[1]' WHERE id='$id'";
+        $update=odbc_exec($connexion,$queryUpdate);
+        header('Location: ./indexMenuprofile.php');
+    }
+ 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,20 +54,55 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="updateMenuprofile.php" method="post">
+                <form action="<?='updateMenuprofile.php?id='.$id?>" method="post">
                     <h1>Modified the Profile-Menu</h1><br>
                     <div class="form-group">
-                        <label for="profile"><h3>Choose Profile</h3></label><br>
-                        <select name="profile" id="profile" class="form-control"></select>
+                        <!-- elements a verifier avec le select -->
+                        <?php while(odbc_fetch_row($selectId)):?>
+                                <?php
+                                    $profilMenuIdP=odbc_result($selectId,'id_profil');
+                                    $profilMenuIm=odbc_result($selectId,'id_menu');    
+                                ?>
+                        <?php endwhile;?>
+                        <label for="profil"><h3>Choose Profile</h3></label><br>
+                        <select name="profil" id="profil" class="form-control">
+                            <!-- j'affiche les differents profils -->
+                            <?php while(odbc_fetch_row($selectProfil)):?>
+                                <?php $attribute=null;?>
+                                <?php
+                                    $idprofil=odbc_result($selectProfil,'id_profil');
+                                    $nomprofil=odbc_result($selectProfil,'nom_profil');    
+                                ?>
+                                <?php if($profilMenuIdP == $idprofil)
+                                    $attribute = "selected='selected'";
+                                ?>
+                                <option value="<?=$idprofil?>" <?=$attribute?>> <?=$nomprofil?> </option>
+                            <?php endwhile;?>
+                        </select>
                         <label for="menu"><h3>Choose Menu</h3></label><br>
-                        <select name="menu" id="menu" class="form-control"></select>
+                        <select name="menu" id="menu" class="form-control">
+                            <!-- j'affiche les differents menus -->
+                            <?php while(odbc_fetch_row($selectMenu)):?>
+                                <?php $attribute1=null;?>
+                                <?php
+                                    $idMenu=odbc_result($selectMenu,'id_menu');
+                                    $nomMenu=odbc_result($selectMenu,'nom_menu');    
+                                ?>
+                                 <?php if($profilMenuIm == $idMenu)
+                                    $attribute1 = "selected='selected'";
+                                ?>
+                                <option value="<?=$idMenu?>" <?=$attribute1?>> <?=$nomMenu?> </option>
+                            <?php endwhile;?>
+                        </select>
                     </div>
-                    <a href="" class="btn btn-primary">Back</a>
+                    <a href="./indexMenuprofile.php" class="btn btn-primary">Back</a>
                     <button type="submit" class="btn btn-success">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                         </svg> Modified
                     </button>
+                    <!-- ferme la connexion -->
+                    <?=finconnexion();?>
                 </form>
             </div>
             <div class="col-lg-6">

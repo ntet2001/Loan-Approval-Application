@@ -1,5 +1,37 @@
 <?php
-  
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+    
+    // je recupere ici la liste des menus
+    $queryMenu="SELECT id_menu, nom_menu FROM menu ";
+    $selectMenu=odbc_exec($connexion,$queryMenu);
+
+    //je recupere ici la liste des profils
+    $queryProfil="SELECT id_profil,nom_profil FROM profil";
+    $selectProfil=odbc_exec($connexion,$queryProfil);
+
+    //je charge les infos dans le tableau
+    $queryMenuProfil="SELECT profil_menu.id, menu.nom_menu, profil.nom_profil
+    FROM profil_menu
+    INNER JOIN menu
+    ON profil_menu.id_menu= menu.id_menu
+    INNER JOIN profil
+    ON profil_menu.id_profil=profil.id_profil";
+    $selectMenuProfil=odbc_exec($connexion,$queryMenuProfil);
+
+    //j'insere un nouveau menu a un profil
+    if (!empty($_POST['profil']) && !empty($_POST['menu'])) {
+        $data=[];
+        $data[0]=$_POST['profil'];
+        $data[1]=$_POST['menu'];
+        $queryinsert="INSERT INTO profil_menu(id_profil,id_menu) VALUES ('$data[0]','$data[1]')";
+        $insert=odbc_exec($connexion,$queryinsert);
+        header('Location: ./indexMenuprofile.php');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,13 +85,32 @@
             <div class="col-lg-6">
                 <form action="indexMenuprofile.php" method="post">
                     <div class="form-group">
-                        <label for="profile"><h3>Choose Profile</h3></label><br>
-                        <select name="profile" id="profile" class="form-control"></select>
+                        <label for="profil"><h3>Choose Profile</h3></label><br>
+                        <select name="profil" id="profil" class="form-control">
+                            <!-- j'affiche les differents profils -->
+                            <?php while(odbc_fetch_row($selectProfil)):?>
+                                <?php
+                                    $idprofil=odbc_result($selectProfil,'id_profil');
+                                    $nomprofil=odbc_result($selectProfil,'nom_profil');    
+                                ?>
+                                <option value="<?=$idprofil?>"><?=$nomprofil?></option>
+                            <?php endwhile;?> 
+                        </select>
                         <label for="menu"><h3>Choose Menu</h3></label><br>
-                        <select name="menu" id="menu" class="form-control"></select>
+                        <select name="menu" id="menu" class="form-control">
+                            <!-- j'affiche les differents menus -->
+                            <?php while(odbc_fetch_row($selectMenu)):?>
+                                <?php
+                                    $idMenu=odbc_result($selectMenu,'id_menu');
+                                    $nomMenu=odbc_result($selectMenu,'nom_menu');    
+                                ?>
+                                <option value="<?=$idMenu?>"><?=$nomMenu?></option>
+                            <?php endwhile;?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <button type="reset" class="btn btn-primary">Reset</button>
+                    <?=$erreur?>
                 </form>
             </div>
             <div class="col-lg-4">
@@ -80,17 +131,24 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- j'affiche les differents menus dans le tableau -->
+                        <?php while(odbc_fetch_row($selectMenuProfil)):?>
+                                <?php
+                                    $idMenuProfil=odbc_result($selectMenuProfil,'id');
+                                    $profilNom=odbc_result($selectMenuProfil,'nom_profil');    
+                                    $menuNom=odbc_result($selectMenuProfil,'nom_menu');    
+                                ?>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><?=$idMenuProfil?></td>
+                            <td><?=$profilNom?></td>
+                            <td><?=$menuNom?></td>
                             <td>
-                                <a href="" class="btn btn-warning">
+                                <a href="<?='./updateMenuprofile.php?id='.$idMenuProfil?>" class="btn btn-warning">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                                     </svg> Modify
                                 </a> 
-                                <a href="" class="btn btn-danger">
+                                <a href="<?='./deleteMenuprofile.php?id='.$idMenuProfil?>" class="btn btn-danger">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -98,6 +156,9 @@
                                 </a>
                             </td>
                         </tr>
+                        <?php endwhile;?>
+                        <!-- ferme la connexion -->
+                        <?=finconnexion();?>
                     </tbody>
                 </table>
             </div>

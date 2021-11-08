@@ -1,5 +1,43 @@
 <?php
-  
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+
+    //je verifie l'id passer par l'url
+    if (!empty($_GET['id'])) {
+    $id=checkInput($_GET['id']);
+    }
+
+    //je charge les menus
+    $queryMenu="SELECT id_menu, nom_menu FROM menu ";
+    $selectMenu=odbc_exec($connexion,$queryMenu);
+
+     // je recupere ici la liste des sous-menus
+     $querySm="SELECT id_sousMenu, nom_sousMenu FROM sousMenu ";
+     $selectSm=odbc_exec($connexion,$querySm);
+
+    //j'affiche les infos recuperer par l'id
+    $querySelect="SELECT sousMenu.nom_sousMenu, menu.id_menu
+    FROM sousMenu
+    INNER JOIN menu
+    ON sousMenu.id_menu=menu.id_menu
+    WHERE sousMenu.id_sousMenu='$id'";
+    $select=odbc_exec($connexion,$querySelect);
+
+    //j'update les donnees
+    if (!empty($_POST['Submenu']) && !empty($_POST['menu'])) {
+        $array=[];
+        $array[0]=$_POST['Submenu'];
+        $array[1]=$_POST['menu'];
+        $queryUpdate="UPDATE sousMenu SET nom_sousMenu='$array[0]', id_menu='$array[1]' WHERE id_sousMenu='$id'";
+        $update=odbc_exec($connexion,$queryUpdate);
+        header('Location: ./indexSousmenu.php');
+    }else{
+        $erreur='<span style="color:red;">Fill All the Inputs!</span>';
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,20 +59,56 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="updateSousmenu.php" method="post">
+                <form action="<?='updateSousmenu.php?id='.$id?>" method="post">
                     <h1>Modified the Sub-Menu</h1><br>
                     <div class="form-group">
                         <label for="Submenu"><h3>Sub Menu Name:</h3></label><br>
-                        <input type="text" name="Submenu" id="Submenu" class="form-control" placeholder="Name">
+                        <!-- info recuperer par l'id -->
+                        <?php while(odbc_fetch_row($select)):?>
+                            <?php
+                                $nomSousMenu=odbc_result($select,'nom_sousMenu');
+                                $menuId=odbc_result($select,'id_menu');           
+                            ?>
+                        <?php endwhile;?>
+                        <select name="sousMenu" id="sousMenu" class="form-control">
+                            <!-- j'affiche les differents menus -->
+                            <?php while(odbc_fetch_row($selectSm)):?>
+                                <?php $attribute1=null;?>
+                                <?php
+                                    $sousMenuId=odbc_result($selectSm,'id_sousMenu');
+                                    $sousMenuNom=odbc_result($selectSm,'nom_sousMenu');    
+                                ?>
+                                <?php if($sousMenuId == $id)
+                                    $attribute1 = "selected='selected'";
+                                ?>
+                                <option value="<?=$sousMenuId?>" <?=$attribute1?>><?=$sousMenuNom?></option>
+                            <?php endwhile;?> 
+                        </select>
                         <label for="menu">Choose Menu</label><br>
-                        <select name="menu" id="menu" class="form-control"></select>
+                        <select name="menu" id="menu" class="form-control">
+                             <!-- j'affiche les differents menus -->
+                            <?php while(odbc_fetch_row($selectMenu)):?>
+                                <?php $attribute=null;?>
+                                <?php
+                                    $idMenu=odbc_result($selectMenu,'id_menu');
+                                    $nomMenu=odbc_result($selectMenu,'nom_menu');    
+                                ?>
+                                <?php if($menuId == $idMenu)
+                                    $attribute = "selected='selected'";
+                                ?>
+                            <option value="<?=$idMenu?>"  <?=$attribute?>> <?=$nomMenu?> </option>
+                            <?php endwhile;?> 
+                        </select>
                     </div>
-                    <a href="" class="btn btn-primary">Back</a>
+                    <a href="./indexSousmenu.php" class="btn btn-primary">Back</a>
                     <button type="submit" class="btn btn-success">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                         </svg> Modified
-                    </button>
+                    </button><br><br>
+                    <?=$erreur?>
+                    <!-- //ferme la connexion a la bd -->
+                    <?php finconnexion(); ?> 
                 </form>
             </div>
             <div class="col-lg-6">

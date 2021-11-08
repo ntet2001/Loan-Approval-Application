@@ -14,7 +14,7 @@
        $profil=$_POST['profil'];
        $queryinsert="INSERT INTO profil (nom_profil) VALUES('$profil')";
        $insert=odbc_exec($connexion,$queryinsert);
-       $erreur='<span style="color:green;">Insert succesfull!</span>';
+       header('Location: ./indexProfile.php');
     }else{
         $erreur='<span style="color:red;">Fill All the Inputs!</span>';
     }

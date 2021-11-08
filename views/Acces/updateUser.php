@@ -137,6 +137,7 @@
                         <span id="verification"></span>
                     </div>
                     <div id="verification"></div>
+                    <!-- message d'erreur et fermeture de la connexion -->
                     <?=$erreur;  finconnexion();?><br>
                     <button type="submit" class="btn btn-primary" name="update">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">

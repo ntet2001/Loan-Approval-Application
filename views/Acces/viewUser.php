@@ -60,6 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- je charge les infos utilisateur dans le tableau -->
                         <?php while(odbc_fetch_row($selectUser)):?>
                             <?php
                                 $idUser=odbc_result($selectUser,'id_user');

@@ -1,5 +1,25 @@
 <?php
-    
+    require_once "../Fonction/auth_function.php";
+    //ajout de la session et connexion et verification de l'id section
+    ajoutsession();
+    estconnecte();
+    $connexion=connexion();
+    $erreur=null;
+
+    //je verifie l'id passer par l'url
+    if (!empty($_GET['id'])) {
+    $id=checkInput($_GET['id']);
+    }
+
+    //je charge le sous menu de l'id
+    $querySousMenu="SELECT nom_sousMenu FROM sousMenu WHERE id_sousMenu='$id'";
+    $selectSousMenu=odbc_exec($connexion,$querySousMenu);
+
+    if (isset($_POST['delete'])) {
+        $queryDelete="DELETE FROM sousMenu WHERE id_sousMenu='$id'";
+        $queryDelete=odbc_exec($connexion,$queryDelete);
+        header('Location: ./indexSousmenu.php');    
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,11 +41,19 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="deleteSousmenu.php" method="post">
+                <form action="<?='deleteSousmenu.php?id='.$id?>" method="post">
                     <h1>Delete Sub Menu</h1><br>
-                    <p class="alert alert-warning">Do you want to delete it?</p>
-                    <a href="" class="btn btn-primary">Cancel</a>
-                    <button type="submit" class="btn btn-danger">Yes</button>
+                    <!-- info recuperer par l'id -->
+                    <?php while(odbc_fetch_row($selectSousMenu)):?>
+                        <?php
+                            $nomSousMenu=odbc_result($selectSousMenu,'nom_sousMenu');          
+                        ?>
+                    <?php endwhile;?>
+                    <p class="alert alert-warning">Do you want to delete <?=$nomSousMenu?> ?</p>
+                    <a href="./indexSousmenu.php" class="btn btn-primary">Cancel</a>
+                    <button type="submit" class="btn btn-danger" name="delete">Yes</button>
+                    <!-- ferme la connexion -->
+                    <?=finconnexion();?>
                 </form>
             </div>
         </div>
