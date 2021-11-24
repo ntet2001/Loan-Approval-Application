@@ -4,16 +4,22 @@
     ajoutsession();
     estconnecte();
     $connexion=connexion();
+    $idReseau=$_SESSION['id_reseau'];
     $erreur=NULL;
 
-    //je charge les champs select
-    $queryAgence="SELECT id_agence,nom_agence FROM agence";
+    // je recupere le nom du reseau
+    $queryReseau="SELECT nom_reseau FROM reseau WHERE id_reseau='$idReseau'";
+    $ResultatReseau=odbc_exec($connexion,$queryReseau);
+    while (odbc_fetch_row($ResultatReseau)) {
+        $nomReseau=odbc_result($ResultatReseau,'nom_reseau');
+    }
+
+    //je charge les champs select profil
     $queryProfil="SELECT id_profil,nom_profil FROM profil";
-    $selectAgence=odbc_exec($connexion,$queryAgence);
     $selectProfil=odbc_exec($connexion,$queryProfil);
 
     //on verifie que les champs sont non vides
-    if (!empty($_POST['nom']) && !empty($_POST['profil']) && !empty($_POST['agence']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
+    if (!empty($_POST['nom']) && !empty($_POST['profil']) && !empty($_POST['agence']) && !empty($_POST['password']) && !empty($_POST['confirmPassword']) && !empty($_POST['reseau']) && !empty($_POST['section']) && !empty($_POST['pole'])) {
         //on verifie la taille du mot de passe
        if(strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8){
            // je verifie que confirm password est egale a password
@@ -24,15 +30,18 @@
                 $data[1]=$_POST['password'];
                 $data[2]=$_POST['agence'];
                 $data[3]=$_POST['profil'];
-                $queryinsert="INSERT INTO users (nom_user,mdp,id_agence,id_profil) 
-                VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+                $data[4]=$_POST['reseau'];
+                $data[5]=$_POST['section'];
+                $data[6]=$_POST['pole'];
+                $queryinsert="INSERT INTO users (nom_user,mdp,id_agence,id_profil,id_reseau,id_section,id_pole) 
+                VALUES ('$data[0]','$data[1]','$data[2]','$data[3]','$data[4]','$data[5]','$data[6]')";
                 $insert=odbc_exec($connexion,$queryinsert);
                 $erreur='<span style="color:green;">insert successful <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                 </svg></span>';
 
             }else{
-                $erreur='<div class="alert alert-danger">confirm password shall be the same as password</div>'; 
+                $erreur='<span style="color:red;">confirm password shall be the same as password</span>'; 
             }
        }else{
            $erreur='<div class="alert alert-danger">08 characters are Required for the password</div>';
@@ -71,18 +80,24 @@
                 <!--dropdown pour fichier-->
                 <div class="collapse navbar-collapse" id="monMenu">
                     <li class="nav-item">
-                        <a href="../connexion/deconnexion.php" class="nav-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
-                                <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-                            </svg>Log Out 
+                        <a href="../Connexion/administrateur.php" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                                <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
+                            </svg>  Return Home
                         </a>
                     </li>
+                </div>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                    <span style="color: white;">Code:<?=$_SESSION['code_admin']." <br>".$_SESSION['nom_admin'].'  Reseau: '.$nomReseau?></span>
                 </div>
             </div>
         </nav>
     </header>
-    <main class="container">
+    <main class="container" style="margin-bottom: 20px;">
         <h1 style="margin-bottom: 20px;">Register User </h1>
         <div class="row formulaire">
             <div class="col-lg-6">
@@ -102,16 +117,77 @@
                                 <option value="<?=$idprofil;?>"><?=$nomprofil;?></option>
                             <?php endwhile;?>  
                         </select>
+                        <label for="reseau">Network</label><br>
+                        <select name="reseau" id="reseau"  class="form-control">
+                            <option value="<?=$idReseau?>"><?=$nomReseau?></option>
+                        </select>
+                        <label for="section">Section</label><br>
+                        <select name="section" id="section"  class="form-control">
+                            <!-- j'affiche les differentes sections -->
+                            <?php
+                                //je charge les champs select section
+                                $querySection="SELECT id_section FROM section WHERE id_reseau='$idReseau'";
+                                $selectSection=odbc_exec($connexion,$querySection);
+                                while (odbc_fetch_row($selectSection)) {
+                                    $id_sections[]=odbc_result($selectSection,'id_section');
+                                }
+                                foreach ($id_sections as $id_section) {
+                                    $querySection="SELECT id_section,nom_section FROM section WHERE id_section='$id_section' ";
+                                    $selectSection=odbc_exec($connexion,$querySection);
+                                    while(odbc_fetch_row( $selectSection)){
+                                        $idsection=odbc_result($selectSection,'id_section');
+                                        $nomsection=odbc_result($selectSection,'nom_section');    
+                                        echo '<option value="'.$idsection.'">'.$nomsection.'</option>';
+                                    }
+                                }
+                            ?> 
+                        </select>
+                        <label for="pole">Pole</label><br>
+                        <select name="pole" id="pole"  class="form-control">
+                            <!-- j'affiche les differentes poles -->
+                            <?php
+                                //je charge les champs select pole
+                                foreach ($id_sections as $idSection) {
+                                    $queryPole="SELECT id_pole FROM pole WHERE id_section='$idSection'";
+                                    $selectPole=odbc_exec($connexion,$queryPole);
+                                    while (odbc_fetch_row($selectPole)) {
+                                        $id_poles[]=odbc_result($selectPole,'id_pole');
+                                    }
+                                }
+                                foreach ($id_poles as $id_pole) {
+                                    $queryPole="SELECT id_pole,nom_pole FROM pole WHERE id_pole='$id_pole'";
+                                    $selectPole=odbc_exec($connexion,$queryPole);
+                                    while(odbc_fetch_row( $selectPole)){
+                                        $idpole=odbc_result($selectPole,'id_pole');
+                                        $nompole=odbc_result($selectPole,'nom_pole');    
+                                        echo '<option value="'.$idpole.'">'.$nompole.'</option>';
+                                    }
+                                }
+                            ?>  
+                        </select>
                         <label for="agence">Agency:</label><br>
                         <select name="agence" id="agence"  class="form-control">
                             <!-- j'affiche les differents agences -->
-                            <?php while(odbc_fetch_row( $selectAgence)):?>
-                                <?php
-                                    $idagence=odbc_result($selectAgence,'id_agence');
-                                    $nomagence=odbc_result($selectAgence,'nom_agence');    
-                                ?>
-                                <option value="<?=$idagence;?>"><?=$nomagence;?></option>
-                            <?php endwhile;?> 
+                            <?php
+                                //je charge les champs select agence
+                                //je recupere les clients de mes agences
+                                foreach ($id_poles as $idPole) {
+                                    $queryAgenceId="SELECT id_agence FROM agence WHERE id_pole='$idPole'";
+                                    $selectAgenceId=odbc_exec($connexion,$queryAgenceId);
+                                    while (odbc_fetch_row($selectAgenceId)) {
+                                        $id_agences[]=odbc_result($selectAgenceId,'id_agence');
+                                    }
+                                }
+                                foreach ($id_agences as $id_agence) {
+                                    $queryAgence="SELECT id_agence,nom_agence FROM agence WHERE id_agence='$id_agence'";
+                                    $selectAgence=odbc_exec($connexion,$queryAgence);
+                                    while(odbc_fetch_row( $selectAgence)){
+                                        $idagence=odbc_result($selectAgence,'id_agence');
+                                        $nomagence=odbc_result($selectAgence,'nom_agence');    
+                                        echo '<option value="'.$idagence.'">'.$nomagence.'</option>';
+                                    }
+                                }
+                            ?> 
                         </select>
                         <label for="password">Password:</label><br>
                         <input type="password" name="password" id="password" class="form-control" maxlength="8">

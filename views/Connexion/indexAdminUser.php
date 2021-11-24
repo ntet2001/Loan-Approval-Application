@@ -1,5 +1,8 @@
 <?php
-    
+    //on demarre la session et la connexion
+    require_once "../Fonction/auth_function.php";
+    ajoutsession();
+    var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +36,12 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="monMenu">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Files</a>
+                    <div class="dropdown-menu">
+                        
+                    </div>
+                </li>
                     <!--autres liens-->
                     <li class="nav-item">
                         <a href="./deconnexion.php" class="nav-link">
@@ -107,9 +116,8 @@
                 </clipPath>
                 </defs>
             </svg>
-
+            
         </div>
     </main>
-
 </body>
 </html>

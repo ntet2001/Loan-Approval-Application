@@ -4,16 +4,23 @@
     ajoutsession();
     estconnecte();
     $connexion=connexion();
+    $idReseau=$_SESSION['id_reseau'];
     $erreur=NULL;
 
     //je charge les champs select
-    $queryUser="SELECT nom_user,id_user,agence.nom_agence,profil.nom_profil
+    $queryUser="SELECT id_user,nom_user,nom_agence,nom_pole,nom_profil,nom_reseau,nom_section
     FROM users
     INNER JOIN agence
-    ON users.id_agence = agence.id_agence
+    ON users.id_agence=agence.id_agence
+    INNER JOIN pole
+    ON users.id_pole=pole.id_pole
     INNER JOIN profil
     ON users.id_profil=profil.id_profil
-    ORDER BY profil.nom_profil,id_user ASC";
+    INNER JOIN reseau
+    ON users.id_reseau=reseau.id_reseau
+    INNER JOIN section
+    ON users.id_section=section.id_section
+    WHERE users.id_reseau='$idReseau'";
     $selectUser=odbc_exec($connexion,$queryUser);
 ?>
 
@@ -55,6 +62,9 @@
                             <th>Id</th>
                             <th>Username</th>
                             <th>Profile</th>
+                            <th>Network</th>
+                            <th>Section</th>
+                            <th>Pole</th>
                             <th>Agency</th>
                             <th>Actions</th>
                         </tr>
@@ -66,12 +76,19 @@
                                 $idUser=odbc_result($selectUser,'id_user');
                                 $nomUser=odbc_result($selectUser,'nom_user');
                                 $nomAgence=odbc_result($selectUser,'nom_agence');    
-                                $nomprofil=odbc_result($selectUser,'nom_profil');    
+                                $nomPole=odbc_result($selectUser,'nom_pole');    
+                                $nomProfil=odbc_result($selectUser,'nom_profil');    
+                                $nomReseau=odbc_result($selectUser,'nom_reseau');    
+                                $nomSection=odbc_result($selectUser,'nom_section');       
                             ?>
+                            <!-- ligne pour les users -->
                             <tr>
                                 <td><?=$idUser?></td>
                                 <td><?=$nomUser?></td>
-                                <td><?=$nomprofil?></td>
+                                <td><?=$nomProfil?></td>
+                                <td><?=$nomReseau?></td>
+                                <td><?=$nomSection?></td>
+                                <td><?=$nomPole?></td>
                                 <td><?=$nomAgence?></td>
                                 <td>
                                     <a href="<?='./updateUser.php?id='.$idUser?>" class="btn btn-primary">

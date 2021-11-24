@@ -4,26 +4,30 @@
     ajoutsession();
     estconnecte();
     $connexion=connexion();
+    $idReseau=$_SESSION['id_reseau'];
     $erreur=NULL;
 
     if(!empty($_GET['id'])){
         $id=checkInput($_GET['id']);
     }
 
-    //charge dans les inputs profil et agence
-    $connexion=connexion();
-    $erreur=NULL;
-    $queryAgence="SELECT id_agence,nom_agence FROM agence";
+    // je recupere le nom du reseau
+    $queryReseau="SELECT nom_reseau FROM reseau WHERE id_reseau='$idReseau'";
+    $ResultatReseau=odbc_exec($connexion,$queryReseau);
+    while (odbc_fetch_row($ResultatReseau)) {
+        $nomReseau=odbc_result($ResultatReseau,'nom_reseau');
+    }
+
+    //je charge les champs select profil
     $queryProfil="SELECT id_profil,nom_profil FROM profil";
-    $selectAgence=odbc_exec($connexion,$queryAgence);
     $selectProfil=odbc_exec($connexion,$queryProfil);
 
     //charge dans les inputs lies a l'id
-    $queryId="SELECT nom_user,mdp,id_agence,id_profil FROM users WHERE id_user='$id'";
+    $queryId="SELECT nom_user,mdp,id_agence,id_profil,id_pole,id_reseau,id_section FROM users WHERE id_user='$id'";
     $selectUser=odbc_exec($connexion,$queryId);
 
     if (isset($_POST['update'])) {
-        if (!empty($_POST['nom']) && !empty($_POST['profil']) && !empty($_POST['agence']) && !empty($_POST['password']) && !empty($_POST['confirmPassword'])) {
+        if (!empty($_POST['nom']) && !empty($_POST['profil']) && !empty($_POST['agence']) && !empty($_POST['password']) && !empty($_POST['confirmPassword']) && !empty($_POST['reseau']) && !empty($_POST['section']) && !empty($_POST['pole'])) {
             if (strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8) {
                 if ($_POST['password'] == $_POST['confirmPassword']) {
                     $data=[];
@@ -31,11 +35,15 @@
                     $data[1]=$_POST['password'];
                     $data[2]=$_POST['agence'];
                     $data[3]=$_POST['profil'];
+                    $data[4]=$_POST['reseau'];
+                    $data[5]=$_POST['section'];
+                    $data[6]=$_POST['pole'];
                     // modification et suppression de donnees
                     //on verifie que les champs sont non vides
                     // modification des donnees
                     $queryUpdate="UPDATE users 
-                    SET nom_user='$data[0]',mdp='$data[1]',id_agence='$data[2]',id_profil='$data[3]'
+                    SET nom_user='$data[0]',mdp='$data[1]',id_agence='$data[2]',id_profil='$data[3]',id_reseau='$data[4]',id_section='$data[5]',
+                    id_pole='$data[6]'
                     WHERE id_user='$id'";
                     $queryUpdate=odbc_exec($connexion,$queryUpdate);
                     header('Location: ./viewUser.php');   
@@ -93,42 +101,112 @@
                                 $nomUser=odbc_result($selectUser,'nom_user');
                                 $profilUser=odbc_result($selectUser,'id_profil');   
                                 $agenceUser=odbc_result($selectUser,'id_agence');         
+                                $mdpUser=odbc_result($selectUser,'mdp');         
+                                $poleUser=odbc_result($selectUser,'id_pole');         
+                                $reseauUser=odbc_result($selectUser,'id_reseau');         
+                                $sectionUser=odbc_result($selectUser,'id_section');         
                             ?>
                         <?php endwhile;?>
                         <input type="text" name="nom" id="nom" class="form-control" value="<?=htmlentities($nomUser)?>">
                         <label for="profil">Profile:</label><br>
                         <select name="profil" id="profil"  class="form-control">
                             <!-- j'affiche les differents profils -->
-                            <!-- je selectionne le profil recuperer -->
-                            <?php while(odbc_fetch_row($selectProfil)):?>
-                                <?php $attribute=null;?>
+                             <?php while(odbc_fetch_row($selectProfil)):?>
+                                <?php $attributePro=null;?>
                                 <?php
                                     $idprofil=odbc_result($selectProfil,'id_profil');
                                     $nomprofil=odbc_result($selectProfil,'nom_profil');    
                                 ?>
-                                <?php if($profilUser == $idprofil)
-                                    $attribute = "selected='selected'";
+                                <?php
+                                    if($profilUser == $idprofil){
+                                        $attributePro = "selected='selected'";
+                                    } 
                                 ?>
-                                <option value="<?=$idprofil;?>" <?=$attribute?> > <?=$nomprofil;?> </option>;
-                            <?php endwhile;?> 
+                                <option value="<?=$idprofil;?>"<?=$attributePro;?> > <?=$nomprofil;?> </option>
+                            <?php endwhile;?>  
+                        </select>
+                        <label for="reseau">Network</label><br>
+                        <select name="reseau" id="reseau"  class="form-control">
+                            <option value="<?=$idReseau?>"><?=$nomReseau?></option>
+                        </select>
+                        <label for="section">Section</label><br>
+                        <select name="section" id="section"  class="form-control">
+                             <!-- j'affiche les differentes sections -->
+                            <?php
+                                //je charge les champs select section
+                                $querySection="SELECT id_section FROM section WHERE id_reseau='$idReseau'";
+                                $selectSection=odbc_exec($connexion,$querySection);
+                                while (odbc_fetch_row($selectSection)) {
+                                    $id_sections[]=odbc_result($selectSection,'id_section');
+                                }
+                                foreach ($id_sections as $id_section) {
+                                    $querySection="SELECT id_section,nom_section FROM section WHERE id_section='$id_section'";
+                                    $selectSection=odbc_exec($connexion,$querySection);
+                                    while(odbc_fetch_row( $selectSection)){
+                                        $attributeSec=null;
+                                        $idsection=odbc_result($selectSection,'id_section');
+                                        $nomsection=odbc_result($selectSection,'nom_section');
+                                        if($sectionUser == $idsection){
+                                            $attributeSec = "selected='selected'";
+                                        }    
+                                        echo '<option value="'.$idsection.'"'.$attributeSec.'>'.$nomsection.'</option>';
+                                    }
+                                }
+                            ?> 
+                        </select>
+                        <label for="pole">Pole</label><br>
+                        <select name="pole" id="pole"  class="form-control">
+                             <!-- j'affiche les differentes poles -->
+                            <?php
+                                //je charge les champs select pole
+                                foreach ($id_sections as $idSection) {
+                                    $queryPole="SELECT id_pole FROM pole WHERE id_section='$idSection'";
+                                    $selectPole=odbc_exec($connexion,$queryPole);
+                                    while (odbc_fetch_row($selectPole)) {
+                                        $id_poles[]=odbc_result($selectPole,'id_pole');
+                                    }
+                                }
+                                foreach ($id_poles as $id_pole) {
+                                    $queryPole="SELECT id_pole,nom_pole FROM pole WHERE id_pole='$id_pole'";
+                                    $selectPole=odbc_exec($connexion,$queryPole);
+                                    while(odbc_fetch_row( $selectPole)){
+                                        $attributePol=null;
+                                        $idpole=odbc_result($selectPole,'id_pole');
+                                        $nompole=odbc_result($selectPole,'nom_pole');
+                                        if($poleUser == $idpole){
+                                            $attributePol = "selected='selected'";
+                                        }    
+                                        echo '<option value="'.$idpole.'"'.$attributePol.'>'.$nompole.'</option>';
+                                    }
+                                }
+                            ?>  
                         </select>
                         <label for="agence">Agency:</label><br>
                         <select name="agence" id="agence"  class="form-control">
                             <!-- j'affiche les differents agences -->
-                            <!-- je selectionne le profil recuperer -->
-                            <?php while(odbc_fetch_row( $selectAgence)):?>
-                                <?php $attribute1=null;?>
-                                <?php
-                                    $idagence=odbc_result($selectAgence,'id_agence');
-                                    $nomagence=odbc_result($selectAgence,'nom_agence');    
-                                ?>
-                                <?php 
-                                    if($agenceUser == $idagence){
-                                        $attribute1 = "selected='selected'";
+                            <?php
+                                //je charge les champs select agence
+                                foreach ($id_poles as $idPole) {
+                                    $queryAgenceId="SELECT id_agence FROM agence WHERE id_pole='$idPole'";
+                                    $selectAgenceId=odbc_exec($connexion,$queryAgenceId);
+                                    while (odbc_fetch_row($selectAgenceId)) {
+                                        $id_agences[]=odbc_result($selectAgenceId,'id_agence');
                                     }
-                                ?>
-                                <option value="<?=$idagence;?>" <?=$attribute1;?> > <?=$nomagence;?> </option>
-                            <?php endwhile;?> 
+                                }
+                                foreach ($id_agences as $id_agence) {
+                                    $queryAgence="SELECT id_agence,nom_agence FROM agence WHERE id_agence='$id_agence'";
+                                    $selectAgence=odbc_exec($connexion,$queryAgence);
+                                    while(odbc_fetch_row( $selectAgence)){
+                                        $attributeAgce=null;
+                                        $idagence=odbc_result($selectAgence,'id_agence');
+                                        $nomagence=odbc_result($selectAgence,'nom_agence'); 
+                                        if($agenceUser == $idagence){
+                                            $attributeAgce = "selected='selected'";
+                                        }    
+                                        echo '<option value="'.$idagence.'"'.$attributeAgce.'>'.$nomagence.'</option>';
+                                    }
+                                }
+                            ?>  
                         </select>
                         <label for="password">Password:</label><br>
                         <input type="password" name="password" id="password" class="form-control" maxlength="8">
