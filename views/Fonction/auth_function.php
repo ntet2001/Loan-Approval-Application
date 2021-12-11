@@ -49,49 +49,45 @@
     }
 
     //fonction pour verifier les menus d'un utilisateur et les retournes
-    function gestMenu(array $menu ,string $profil)
+    function gestMenu($menu ,string $profil)
     {   
         $menus=[];
-        foreach ($menu as $nomMenu) {
-            if ($nomMenu == 'files') {
-                $menus[]='<a class="dropdown-item" href="../Organisation/indexSection.php">Section</a>';
-                $menus[]='<a class="dropdown-item" href="../Organisation/indexPole.php">Pole</a>';
-                $menus[]='<a class="dropdown-item" href="../Organisation/indexAgence.php">Agency</a>';
-                $menus[]='<a class="dropdown-item" href="../Organisation/indexClient.php">Customer</a>';
-                $menus[]='<a class="dropdown-item" href="../Loan/indexDocument.php">Document</a>';
-                $menus[]='<a class="dropdown-item" href="../Loan/indexType.php">Type Loan</a>';
-                $menus[]='<a class="dropdown-item" href="../Loan/indexBut.php">Purpose Loan</a>';
-                $menus[]='<a class="dropdown-item" href="../Loan/indexNature.php">Nature Loan</a>';
-                //pour les traitements
-            }else if($nomMenu == 'traitment'){
-                if ($profil == 'initiator') {
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/initiation.php">initiation</a></li>';
-                }elseif($profil == 'confirmer'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/indexConformite.php">Conformity</a></li>';
-                }elseif($profil == 'analyst'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/analyse.php">Analyst</a></li>';
-                }elseif($profil == '1st evaluator'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/evaluation1.php">1st Evaluation</a></li>';
-                }elseif($profil == '2nd evaluator'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/evaluation2.php">2nd Evaluation</a></li>';
-                }elseif($profil == '3rd evaluator'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/evaluation3.php">3rd Evaluation</a></li>';
-                }elseif($profil == 'directory board'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/manager.php">Directory Board</a></li>';
-                }elseif($profil == 'credit comittee'){
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/comittee.php">Credit Comittee</a></li>';
-                }else{
-                    $menus[]='<li class="nav-item"><a class="nav-link" href="../Loan/creditAdmin.php">Credit Administration</a></li>';
-                }
-            }
-            elseif ($nomMenu == 'consultation') {
-                $menus[]='<li class="nav-item"><a class="nav-link href="../Analyse/indexConsultation.php">Consultation</a></li>';
-            }elseif ($nomMenu == 'analyses') {
-                $menus[]='<li class="nav-item"><a class="nav-link href="../Analyse/indexAnalyse.php">Analyses</a></li>';
-            }elseif ($nomMenu == 'tools') {
-                $menus[]='<li class="nav-item"><a class="nav-link href="../Analyse/indexOutils.php">Tools</a></li>';
+        $taille=null;
+        $lien1=null;
+        //pour les traitements
+        if ($profil == 'initiator') {
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/initiation.php">initiation</a></li>';
+        }elseif($profil == 'confirmer'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/indexConformite.php">Conformity</a></li>';
+        }elseif($profil == 'analyst'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/analyse.php">Analyst</a></li>';
+        }elseif($profil == '1st evaluator'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/evaluation1.php">1st Evaluation</a></li>';
+        }elseif($profil == '2nd evaluator'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/evaluation2.php">2nd Evaluation</a></li>';
+        }elseif($profil == '3rd evaluator'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/evaluation3.php">3rd Evaluation</a></li>';
+        }elseif($profil == 'directory board'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/manager.php">Directory Board</a></li>';
+        }elseif($profil == 'credit comittee'){
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/comittee.php">Credit Comittee</a></li>';
+        }else{
+            $lien1='<li class="nav-item"><a class="nav-link" href="../Loan/creditAdmin.php">Credit Administration</a></li>';
+        }
+        $menus[0]=$lien1;
+        //autres menu
+        if(is_array($menu)){
+            $taille=count($menu);
+        }
+        for ($i=0; $i<$taille ;$i++) {
+            if ($menu[$i]== 'consultation') {
+                $menus[]='<li class="nav-item"><a class="nav-link" href="../Analyse/indexConsultation.php">Consultation</a></li>';
+            }elseif ($menu[$i] == 'analyses') {
+                $menus[]='<li class="nav-item"><a class="nav-link" href="../Analyse/indexAnalyse.php">Analyses</a></li>';
+            }elseif ($menu[$i] == 'tools') {
+                $menus[]='<li class="nav-item"><a class="nav-link" href="../Analyse/indexOutils.php">Tools</a></li>';
             }else{
-                break;
+               $menus[]=null;
             }
         }
         //retourne le tableau de menus

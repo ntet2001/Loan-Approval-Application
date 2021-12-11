@@ -91,7 +91,14 @@
                                  <?php if($profilMenuIm == $idMenu)
                                     $attribute1 = "selected='selected'";
                                 ?>
-                                <option value="<?=$idMenu?>" <?=$attribute1?>> <?=$nomMenu?> </option>
+                                <?php
+                                    if ($nomMenu == 'files') {
+                                       $disable="disabled";
+                                    }else{
+                                        $disable=null;
+                                    }
+                                ?>
+                                <option value="<?=$idMenu?>" <?=$attribute1?> <?=$disable?>> <?=$nomMenu?> </option>
                             <?php endwhile;?>
                         </select>
                     </div>

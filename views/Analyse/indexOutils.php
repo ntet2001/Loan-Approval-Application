@@ -1,9 +1,25 @@
 <?php
-    //ajout de ma session et du nom de l'utilisateur dans mon loan header
-    session_start();
-    if ($_SESSION['connecte']!=1) {
-        header('Location: ../../login.php');
-    }
+   //ajout de ma session  et test sur le user est connecte
+   require_once "../Fonction/auth_function.php";
+   ajoutsession();
+   estconnecte();
+   $connexion=connexion();
+   $erreur=NULL;
+   $date=null;
+   $idReseau=$_SESSION['id_reseau'];
+   $idAgence=$_SESSION['id_agence'];
+   $idUser=$_SESSION['id_user'];
+   // je recupere le nom du reseau et le nom de l'agence du user
+   $queryReseau="SELECT nom_reseau FROM reseau WHERE id_reseau='$idReseau'";
+   $queryAgence="SELECT nom_agence FROM agence WHERE id_agence='$idAgence'";
+   $ResultatReseau=odbc_exec($connexion,$queryReseau);
+   while (odbc_fetch_row($ResultatReseau)) {
+       $nomReseau=odbc_result($ResultatReseau,'nom_reseau');
+   }
+   $ResultatAgence=odbc_exec($connexion,$queryAgence);
+   while (odbc_fetch_row($ResultatAgence)) {
+       $nomAgence=odbc_result($ResultatAgence,'nom_agence');
+   }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,12 +29,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!--link call bootstrap css-->
-    <link rel="stylesheet" href="../../dist/css/bootstrap.css">
-    <link rel="stylesheet" href="../headerAdmin/headerAdmin.css">
+    <link rel="stylesheet" href="../dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../connexion/headerAdmin/headerAdmin.css">
         <!--call bootstrap javascript-->
-    <script src="../../dist/jquery/jquery-3.6.0.min.js"></script>
-    <script src="../../dist/js/bootstrap.js"></script>
-    <script src="../../dist/js/popper.min.js"></script>
+    <script src="../dist/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../dist/js/bootstrap.js"></script>
+    <script src="../dist/js/popper.min.js"></script>
 </head>
 <body>
     <!---header pour ma navbar -->
@@ -28,47 +44,23 @@
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#monMenu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="monMenu">
-                    <!--dropdown pour fichier-->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Files</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="../fichier/reseau/indexReseau.php">Network</a>
-                        <a class="dropdown-item" href="../fichier/section/indexSection.php">Section</a>
-                        <a class="dropdown-item" href="../fichier/pole/indexPole.php">Pole</a>
-                        <a class="dropdown-item" href="../fichier/agence/indexAgence.php">Agency</a>
-                        <a class="dropdown-item" href="../fichier/document/indexDocument.php">Documents</a>
-                        <a class="dropdown-item" href="../fichier/client/indexClient.php">Customers</a>
-                        <a class="dropdown-item" href="../fichier/typePret/indexType.php">Type Loan</a>
-                        <a class="dropdown-item" href="../fichier/butPret/indexbut.php">Purpose Loan</a>
-                        <a class="dropdown-item" href="../fichier/naturePret/indexNature.php">Nature Loan</a>
-                    </div>
-                </li>
-                 <!--dropdown pour traitement-->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Traitment</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="../../loan/initiation.php">Initiation</a>
-                        <a class="dropdown-item" href="../../loan/indexConformite.php">Confirmation</a>
-                        <a class="dropdown-item" href="../../loan/analyse.php">Analyze</a>
-                        <a class="dropdown-item" href="../../loan/evaluation1.php">1st evaluation</a>
-                        <a class="dropdown-item" href="../../loan/evaluation2.php">2nd evaluation</a>
-                        <a class="dropdown-item" href="../../loan/evaluation3.php">3rd evaluation</a>
-                        <a class="dropdown-item" href="../../loan/manager.php">General Manager</a>
-                        <a class="dropdown-item" href="../../loan/comitee.php">Credit commitee</a>
-                        <a class="dropdown-item" href="../../loan/creditAdmin.php">Credit administration</a>
-                    </div>
-                </li>
-                 <!--autres liens-->
-                <li class="nav-item"><a href="../consultation/indexConsultation.php" class="nav-link">Consultation</a></li>
-                <li class="nav-item"><a href="../analyse/indexAnalyse.php" class="nav-link">Analyzies</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Tools</a></li>
-                <li class="nav-item"><a href="../administration/indexUser.php" class="nav-link">Administration</a></li>
-                <li class="nav-item"><a href="../../deconnexion.php" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
-  <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-</svg>Log Out </a></li>
+               <div class="collapse navbar-collapse" id="monMenu">
+                    <li class="nav-item">
+                        <a href="../Connexion/indexAdminUser.php" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left-square-fill" viewBox="0 0 16 16">
+                                <path d="M16 14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12zm-4.5-6.5H5.707l2.147-2.146a.5.5 0 1 0-.708-.708l-3 3a.5.5 0 0 0 0 .708l3 3a.5.5 0 0 0 .708-.708L5.707 8.5H11.5a.5.5 0 0 0 0-1z"/>
+                            </svg>  Return Home
+                        </a>
+                    </li>
                 </div>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                    <span style="color: white;">Nom: <?=$_SESSION['nom_user'].'  '.'('.$_SESSION['nom_profil'].')'."<br>".'Reseau: '.$nomReseau.' '.'Agence: '.$nomAgence?></span>
+                </div>
+               </div>
             </div>
         </nav>
     </header>

@@ -128,7 +128,7 @@
         <div class="row">
             <div class="col">
                 <!--mon formulaire-->
-                <form action="login.php" method="post" class="formulaire">
+                <form action="login.php" method="post" class="formulaire" autocomplete="off">
                     <div class="profile form-group">
                         <label for="nom">Nom:</label><br>
                         <input type="text" name="nom" id="nom" class="form-control" placeholder="Enter Your Username">

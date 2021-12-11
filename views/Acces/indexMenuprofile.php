@@ -113,12 +113,20 @@
                         <label for="menu"><h3>Choose Menu</h3></label><br>
                         <select name="menu" id="menu" class="form-control">
                             <!-- j'affiche les differents menus -->
+                            <?php $disable=null;?>
                             <?php while(odbc_fetch_row($selectMenu)):?>
                                 <?php
                                     $idMenu=odbc_result($selectMenu,'id_menu');
                                     $nomMenu=odbc_result($selectMenu,'nom_menu');    
                                 ?>
-                                <option value="<?=$idMenu?>"><?=$nomMenu?></option>
+                                <?php
+                                    if ($nomMenu == 'files') {
+                                       $disable="disabled";
+                                    }else{
+                                        $disable=null;
+                                    }
+                                ?>
+                                <option value="<?=$idMenu?>" <?=$disable?>><?=$nomMenu?></option>
                             <?php endwhile;?>
                         </select>
                     </div>

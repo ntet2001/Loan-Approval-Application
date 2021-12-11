@@ -2,7 +2,27 @@
     //on demarre la session et la connexion
     require_once "../Fonction/auth_function.php";
     ajoutsession();
-    var_dump($_SESSION);
+    estconnecte();
+    $connexion=connexion();
+
+    $idReseau=$_SESSION['id_reseau'];
+    $idAgence=$_SESSION['id_agence'];
+    // je recupere le nom du reseau et le nom de l'agence du user
+    $queryReseau="SELECT nom_reseau FROM reseau WHERE id_reseau='$idReseau'";
+    $queryAgence="SELECT nom_agence FROM agence WHERE id_agence='$idAgence'";
+    $ResultatReseau=odbc_exec($connexion,$queryReseau);
+    while (odbc_fetch_row($ResultatReseau)) {
+        $nomReseau=odbc_result($ResultatReseau,'nom_reseau');
+    }
+    $ResultatAgence=odbc_exec($connexion,$queryAgence);
+    while (odbc_fetch_row($ResultatAgence)) {
+        $nomAgence=odbc_result($ResultatAgence,'nom_agence');
+    }
+    
+    //je recupere dans ma session le profil et ses menus pour l'affichage
+    $profil=$_SESSION['nom_profil'];
+    $menus=$_SESSION['menu'];
+    $gestMenu=gestMenu($menus,$profil);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,12 +56,11 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="monMenu">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Files</a>
-                    <div class="dropdown-menu">
-                        
-                    </div>
-                </li>
+                    <?php
+                        foreach ($gestMenu as  $lien) {
+                            echo "$lien";
+                        }
+                    ?>
                     <!--autres liens-->
                     <li class="nav-item">
                         <a href="./deconnexion.php" class="nav-link">
@@ -51,6 +70,13 @@
                             </svg>Log Out 
                         </a>
                     </li>
+                </div>
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                    </svg>
+                    <span style="color: white;">Nom: <?=$_SESSION['nom_user'].'  '.'('.$_SESSION['nom_profil'].')'."<br>".'Reseau: '.$nomReseau.' '.'Agence: '.$nomAgence?></span>
                 </div>
             </div>
         </nav>
