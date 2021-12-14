@@ -81,7 +81,7 @@
         <!---Formulaire-->
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="indexAgence.php" method="post">
+                <form action="indexAgence.php" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="nomAgence"><h3>Agency Name</h3></label><br>
                         <input type="text" name="nomAgence" id="nomAgence" class="form-control" placeholder="Name"><br>
@@ -132,6 +132,8 @@
                         <!-- //je recupere les Poles liees a l'id des sections de l'utilisateur -->
                         <!-- //je charge le tableau des poles en recuperant les differentes sections de l'admin  -->
                        <?php
+                            $idSections=[];
+                            $id_poles=[];
                             $querySection="SELECT id_section FROM section WHERE id_reseau='$idReseau'";
                             $selectSection=odbc_exec($connexion,$querySection);
                             while (odbc_fetch_row($selectSection)) {

@@ -75,7 +75,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='updateClient.php?id='.$id?>" method="post">
+                <form action="<?='updateClient.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Modify Customer</h1><br>
                     <?php
                         while (odbc_fetch_row($selectClient)) {

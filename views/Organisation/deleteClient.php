@@ -44,7 +44,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='deleteClient.php?id='.$id?>" method="post">
+                <form action="<?='deleteClient.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Delete Customer</h1><br>
                      <p class="alert alert-warning">Do you want to delete <?=$nomClient?> ?</p>
                     <a href="./indexClient.php" class="btn btn-primary">Cancel</a>

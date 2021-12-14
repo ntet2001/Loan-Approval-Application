@@ -19,11 +19,14 @@
         if (strlen($_POST['password']) == 8) {
             $data=[];
             $data[0]=$_POST['nomReseau'];
-            $data[1]=$_POST['nomAdmin'];
-            $data[2]=$_POST['password'];
-            $queryUpdate="UPDATE reseau SET nom_reseau='$data[0]',nom_admin='$data[1]',mdp_admin='$data[2]' WHERE id_reseau='$id';";
-            $update=odbc_exec($connexion,$queryUpdate);
-            header('Location: ./indexReseau.php');
+            $data[1]=strtolower($_POST['nomAdmin']);
+            $data[2]=strtolower($_POST['password']);
+            $pwd=password_hash($data[2],PASSWORD_DEFAULT,['cost' => 14]);
+            if (password_verify($data[2],$pwd)) {
+                $queryUpdate="UPDATE reseau SET nom_reseau='$data[0]',nom_admin='$data[1]',mdp_admin='$data[2]' WHERE id_reseau='$id';";
+                $update=odbc_exec($connexion,$queryUpdate);
+                header('Location: ./indexReseau.php');   
+            }
         }else{
             $erreur='<span style="color:red;">Password Shall Be 08 characters</span>';
         }
@@ -51,7 +54,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='./updateReseau.php?id='.$id?>" method="post">
+                <form action="<?='./updateReseau.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Modify Network</h1><br>
                     <div class="form-group">
                         <?php while(odbc_fetch_row($select)):?>

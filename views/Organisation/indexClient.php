@@ -6,6 +6,9 @@
     $connexion=connexion();
     $erreur=NULL;
     $idReseau=$_SESSION['id_reseau'];
+    $idSections=[];
+    $idPoles=[];
+    $idAgences=[];
 
     // je recupere le nom du reseau
     $queryReseau="SELECT nom_reseau FROM reseau WHERE id_reseau='$idReseau'";
@@ -102,7 +105,7 @@
     <!--mon main avec mon Formulaire d'enregistrement-->
     <main class="container" style="margin-bottom: 50px;">
         <h3 style="text-align: center;margin-bottom:50px;">Register Customer</h3>
-        <form action="indexClient.php" method="post">
+        <form action="indexClient.php" method="post" autocomplete="off">
             <div class="row formulaire">
                 <div class="col-lg-6 form-group">
                     <label for="numClient">Customer No:</label><br>

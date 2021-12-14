@@ -97,7 +97,7 @@
         <!---Formulaire-->
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="indexMenuprofile.php" method="post">
+                <form action="indexMenuprofile.php" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="profil"><h3>Choose Profile</h3></label><br>
                         <select name="profil" id="profil" class="form-control">

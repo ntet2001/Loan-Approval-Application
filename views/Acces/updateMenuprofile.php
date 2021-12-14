@@ -54,7 +54,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='updateMenuprofile.php?id='.$id?>" method="post">
+                <form action="<?='updateMenuprofile.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Modified the Profile-Menu</h1><br>
                     <div class="form-group">
                         <!-- elements a verifier avec le select -->

@@ -41,7 +41,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='deleteSection.php?id='.$id?>" method="post">
+                <form action="<?='deleteSection.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Delete Section</h1><br>
                     <?php while (odbc_fetch_row($selectId)):?>
                         <?php $nomSection=odbc_result($selectId,"nom_section");?>

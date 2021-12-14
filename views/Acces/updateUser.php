@@ -31,22 +31,25 @@
             if (strlen($_POST['password'])==8 && strlen($_POST['confirmPassword'])==8) {
                 if ($_POST['password'] == $_POST['confirmPassword']) {
                     $data=[];
-                    $data[0]=$_POST['nom'];
-                    $data[1]=$_POST['password'];
+                    $data[0]=strtolower($_POST['nom']);
+                    $data[1]=strtolower($_POST['password']);
                     $data[2]=$_POST['agence'];
                     $data[3]=$_POST['profil'];
                     $data[4]=$_POST['reseau'];
                     $data[5]=$_POST['section'];
                     $data[6]=$_POST['pole'];
-                    // modification et suppression de donnees
-                    //on verifie que les champs sont non vides
-                    // modification des donnees
-                    $queryUpdate="UPDATE users 
-                    SET nom_user='$data[0]',mdp='$data[1]',id_agence='$data[2]',id_profil='$data[3]',id_reseau='$data[4]',id_section='$data[5]',
-                    id_pole='$data[6]'
-                    WHERE id_user='$id'";
-                    $queryUpdate=odbc_exec($connexion,$queryUpdate);
-                    header('Location: ./viewUser.php');   
+                    $pwdUser=password_hash($data[1],PASSWORD_DEFAULT,['cost' => 14]);
+                    if (password_verify($data[1],$pwdUser)) {
+                        // modification et suppression de donnees
+                        //on verifie que les champs sont non vides
+                        // modification des donnees
+                        $queryUpdate="UPDATE users 
+                        SET nom_user='$data[0]',mdp='$data[1]',id_agence='$data[2]',id_profil='$data[3]',id_reseau='$data[4]',id_section='$data[5]',
+                        id_pole='$data[6]'
+                        WHERE id_user='$id'";
+                        $queryUpdate=odbc_exec($connexion,$queryUpdate);
+                        header('Location: ./viewUser.php');    
+                    }  
                 }else{
                     $erreur='<div class="alert alert-danger">confirm password shall be the same as password</div>'; 
                 }
@@ -92,7 +95,7 @@
         <h1>Update User Informations</h1>
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="<?='updateUser.php?id='.$id?>" method="post">
+                <form action="<?='updateUser.php?id='.$id?>" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="nom">Name:</label><br>
                         <!-- j'affiche le nom de l'utilisateur -->

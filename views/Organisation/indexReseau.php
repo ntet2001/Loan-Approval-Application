@@ -33,12 +33,17 @@
         $data[1]='admin'.$compteur;
         $data[2]=$compteur;
         $data[3]='00000000';
-        $queryInsert="INSERT INTO reseau (nom_reseau,nom_admin,code_admin,mdp_admin) VALUES('$data[0]','$data[1]','$data[2]','$data[3]')";
-        $insert=odbc_exec($connexion,$queryInsert);
-        //j'update le compteur dans la bd
-        $queryUpdateCompteur="UPDATE compteur SET compteur='$compteur'WHERE compteur_id='1'";
-        $updateCompteur=odbc_exec($connexion,$queryUpdateCompteur);
-        header('Location: ./indexReseau.php');
+        $pwd=password_hash($data[3],PASSWORD_DEFAULT,['cost' => 14]);
+        if (password_verify($data[3],$pwd)) {
+            $queryInsert="INSERT INTO reseau (nom_reseau,nom_admin,code_admin,mdp_admin) VALUES('$data[0]','$data[1]','$data[2]','$data[3]')";
+            $insert=odbc_exec($connexion,$queryInsert);
+            //j'update le compteur dans la bd
+            $queryUpdateCompteur="UPDATE compteur SET compteur='$compteur'WHERE compteur_id='1'";
+            $updateCompteur=odbc_exec($connexion,$queryUpdateCompteur);
+            header('Location: ./indexReseau.php');   
+        }else{
+            $erreur='<span style="color:red;">Problem when insert Password</span>';
+        }
     }else{
         $erreur='<span style="color:red;">Fill All the Inputs</span>';
     }
@@ -100,7 +105,7 @@
         <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="indexReseau.php" method="post" enctype="multipart/form-data">
+                <form action="indexReseau.php" method="post" enctype="multipart/form-data" autocomplete="off">
                     <div class="form-group">
                         <label for="nomReseau"><h3>Network Name</h3></label><br>
                         <input type="text" name="nomReseau" id="nomReseau" class="form-control"placeholder="ex:Name">

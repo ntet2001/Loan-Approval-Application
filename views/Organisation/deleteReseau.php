@@ -43,7 +43,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?="./deleteReseau.php?id=".$id?>" method="post">
+                <form action="<?="./deleteReseau.php?id=".$id?>" method="post" autocomplete="off">
                     <h1>Delete Network</h1><br>
                     <?php while (odbc_fetch_row($select)):?>
                         <?php 

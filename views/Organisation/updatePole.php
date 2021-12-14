@@ -54,7 +54,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='updatePole.php?id='.$id?>" method="post">
+                <form action="<?='updatePole.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Modify Pole</h1><br>
                     <div class="form-group">
                         <?php

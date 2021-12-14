@@ -89,7 +89,7 @@
         <!---Formulaire-->
         <div class="row formulaire">
             <div class="col-lg-6">
-                <form action="indexSection.php" method="post">
+                <form action="indexSection.php" method="post" autocomplete="off">
                     <div class="form-group">
                         <label for="nomSection"><h3>Section Name</h3></label><br>
                         <input type="text" name="nomSection" id="nomSection" class="form-control" placeholder="ex:Name"><br>

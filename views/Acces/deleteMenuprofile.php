@@ -38,7 +38,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='deleteMenuprofile.php?id='.$id?>" method="post">
+                <form action="<?='deleteMenuprofile.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Delete Profile-Menu</h1><br>
                     <p class="alert alert-warning">Do you want to delete Profile-menu<?=$id?> ?</p>
                     <a href="./indexMenuprofile.php" class="btn btn-primary">Cancel</a>

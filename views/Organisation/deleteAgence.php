@@ -44,7 +44,7 @@
     <div class="row formulaire">
             <div class="col-lg-6">
                 <!--formulaire-->
-                <form action="<?='deleteAgence.php?id='.$id?>" method="post">
+                <form action="<?='deleteAgence.php?id='.$id?>" method="post" autocomplete="off">
                     <h1>Delete Agency</h1><br>
                     <p class="alert alert-warning">Do you want to delete <?=$nomAgence?> ?</p>
                     <a href="./indexAgence.php" class="btn btn-primary">Cancel</a>
