@@ -6,6 +6,7 @@
     $connexion=connexion();
     $erreur=NULL;
     $idReseau=$_SESSION['id_reseau'];
+    $idAgences=$_SESSION['id_agences'];
 
     // je recupere le nom du reseau
     $queryReseau="SELECT nom_reseau FROM reseau WHERE id_reseau='$idReseau'";
@@ -13,11 +14,6 @@
     while (odbc_fetch_row($ResultatReseau)) {
         $nomReseau=odbc_result($ResultatReseau,'nom_reseau');
     }
-
-    $queryDocument="SELECT id_document,nom_document,date_document,client.nom_client FROM document
-    INNER JOIN client
-    ON document.id_client=client.id_client";
-    $selectDocument=odbc_exec($connexion,$queryDocument);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,21 +81,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while(odbc_fetch_row($selectDocument)):?>
+                        <?php foreach($idAgences as $idAgence):?>
                             <?php
-                                $idDocument=odbc_result($selectDocument,'id_document');    
-                                $nomDocument=odbc_result($selectDocument,'nom_document');    
-                                $dateDocument=odbc_result($selectDocument,'date_document');    
-                                $nomClient=odbc_result($selectDocument,'nom_client'); 
-                                $documentNom=str_replace('./uploads/','',$nomDocument);    
+                                $queryDocument="SELECT id_document,nom_document,date_document,client.nom_client FROM document
+                                INNER JOIN client
+                                ON document.id_client=client.id_client
+                                WHERE client.id_agence='$idAgence'";
+                                $selectDocument=odbc_exec($connexion,$queryDocument);    
                             ?>
-                            <tr>
-                                <td><?=$idDocument?></td>
-                                <td><?=$documentNom?></td>
-                                <td><?=$dateDocument?></td>
-                                <td><?=$nomClient?></td>
-                            </tr>
-                        <?php endwhile;?>
+                            <?php while(odbc_fetch_row($selectDocument)):?>
+                                <?php
+                                    $idDocument=odbc_result($selectDocument,'id_document');    
+                                    $nomDocument=odbc_result($selectDocument,'nom_document');    
+                                    $dateDocument=odbc_result($selectDocument,'date_document');    
+                                    $nomClient=odbc_result($selectDocument,'nom_client'); 
+                                    $documentNom=str_replace('./uploads/','',$nomDocument);    
+                                ?>
+                                <tr>
+                                    <td><?=$idDocument?></td>
+                                    <td><?=$documentNom?></td>
+                                    <td><?=$dateDocument?></td>
+                                    <td><?=$nomClient?></td>
+                                </tr>
+                            <?php endwhile;?>
+                        <?php endforeach;?>    
                         <?php finconnexion();?>
                     </tbody>
                 </table>

@@ -1,6 +1,9 @@
 <?php 
     //ajout de ma session  et test sur le user est connecte
     require_once "../Fonction/auth_function.php";
+    require_once 'vendor/autoload.php';
+
+
     ajoutsession();
     estconnecte();
     $connexion=connexion();
@@ -83,29 +86,38 @@
             $insertTraiter=odbc_exec($connexion,$queryTraiter1);
         }
 
-        //je recupere les opinions
+        //je recupere les opinions des autres memebres du workflow
         $queryOpinion="SELECT opinion FROM traiter WHERE num_dossier='$array[0]'";
         $selectQuery=odbc_exec($connexion,$queryOpinion);
 
         //je fais la mise a jour des infos si envoyer est defini et que on a choisi approve ou je supprime si reject
         if (isset($_POST['envoyer'])) {
-            if (!empty($_POST['opinion']) && !empty($_POST['decision'])) {
+            if (!empty($_POST['notification'])) {
                 date_default_timezone_set('Europe/paris');
                 $datefin=date('j/n/Y H:i:s');
-                $opinion=$_POST['opinion'];
-                $decision=$_POST['decision'];
-                $montantacc=$_POST['montantaccorde'];
-                if ($decision == 1) {
+                $notification=$_POST['notification'];
+                if ($notification == 1) {
                     $queryUpdateTraiter="UPDATE traiter SET date_fin='$datefin',opinion='approved' WHERE num_dossier='$array[0]' AND id_user='$idUser'";
                     $updateTraiter=odbc_exec($connexion,$queryUpdateTraiter);
+                    
+                    //api sms bird message
+                    $messagebird = new MessageBird\Client('rokhCwfwKJNg5gU1qSLNfh8Ha');
+                    $message = new MessageBird\Objects\Message;
+                    $message->originator = '+237695050197';
+                    $message->recipients = [ '+237695050197' ];
+                    $message->body = 'Hi '."$info[1]".',Your Credit was Approved!';
+                    $response = $messagebird->messages->create($message);
+                    var_dump($response);
+                   
                     //update statut a 1 sur engagement
-                    $queryUpdateEngagement="UPDATE engagement SET statut=8, montant_acc='$montantacc' WHERE num_dossier='$array[0]'";
+                    $queryUpdateEngagement="UPDATE engagement SET statut=8 WHERE num_dossier='$array[0]'";
                     $updateEngagement=odbc_exec($connexion,$queryUpdateEngagement);
                     header('Location: ./creditAdmin.php');
+                    
                 }else{
                     $queryUpdateTraiter="UPDATE traiter SET date_fin='$datefin',opinion='rejected' WHERE num_dossier='$array[0]' AND id_user='$idUser'";
                     $updateTraiter=odbc_exec($connexion,$queryUpdateTraiter);
-                    $queryUpdateEngagement="UPDATE engagement SET statut=-1, montant_acc=0 WHERE num_dossier='$array[0]'";
+                    $queryUpdateEngagement="UPDATE engagement SET statut=-1 WHERE num_dossier='$array[0]'";
                     $updateEngagement=odbc_exec($connexion,$queryUpdateEngagement);
                     header('Location: ./creditAdmin.php');
                 }
@@ -199,6 +211,7 @@
                         </select> <br>
                     <button type="submit" class="btn btn-success" name="envoyer">Notified Custormer</button>
                 </form>
+                <?=$erreur?>
             </div>
     </main>
 </body>
