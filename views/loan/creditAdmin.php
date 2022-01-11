@@ -101,7 +101,7 @@
                     $updateTraiter=odbc_exec($connexion,$queryUpdateTraiter);
                     
                     //api sms bird message
-                    $messagebird = new MessageBird\Client('rokhCwfwKJNg5gU1qSLNfh8Ha');
+                    $messagebird = new MessageBird\Client('G6CmeU2Fj0IcFOT7i9FF60LIM');
                     $message = new MessageBird\Objects\Message;
                     $message->originator = '+237695050197';
                     $message->recipients = [ '+237695050197' ];
@@ -122,12 +122,12 @@
                     $updateEngagement=odbc_exec($connexion,$queryUpdateEngagement);
 
                     //api sms bird message
-                    $messagebird = new MessageBird\Client('rokhCwfwKJNg5gU1qSLNfh8Ha');
+                    $messagebird = new MessageBird\Client('G6CmeU2Fj0IcFOT7i9FF60LIM');
                     $message = new MessageBird\Objects\Message;
                     $message->originator = '+237695050197';
                     $message->recipients = [ '+237695050197' ];
-                    $message->body = 'Dear Customer '."$info[1]".',Your Loan Request was Rejected!';
-                    $response = $messagebird->messages->create($message); 
+                    $message->body = 'Hi Dear Customer: '."$info[1]".',Your Loan Request was Rejected!';
+                    $response = $messagebird->messages->create($message);
 
                     header('Location: ./creditAdmin.php');
                 }
