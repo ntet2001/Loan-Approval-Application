@@ -105,13 +105,14 @@
                     $message = new MessageBird\Objects\Message;
                     $message->originator = '+237695050197';
                     $message->recipients = [ '+237695050197' ];
-                    $message->body = 'Hi '."$info[1]".',Your Credit was Approved!';
+                    $message->body = 'Hi Dear Customer: '."$info[1]".',Your Credit was Approved!';
                     $response = $messagebird->messages->create($message);
                     var_dump($response);
                    
                     //update statut a 1 sur engagement
                     $queryUpdateEngagement="UPDATE engagement SET statut=8 WHERE num_dossier='$array[0]'";
                     $updateEngagement=odbc_exec($connexion,$queryUpdateEngagement);
+
                     header('Location: ./creditAdmin.php');
                     
                 }else{
@@ -119,6 +120,15 @@
                     $updateTraiter=odbc_exec($connexion,$queryUpdateTraiter);
                     $queryUpdateEngagement="UPDATE engagement SET statut=-1 WHERE num_dossier='$array[0]'";
                     $updateEngagement=odbc_exec($connexion,$queryUpdateEngagement);
+
+                    //api sms bird message
+                    $messagebird = new MessageBird\Client('rokhCwfwKJNg5gU1qSLNfh8Ha');
+                    $message = new MessageBird\Objects\Message;
+                    $message->originator = '+237695050197';
+                    $message->recipients = [ '+237695050197' ];
+                    $message->body = 'Dear Customer '."$info[1]".',Your Loan Request was Rejected!';
+                    $response = $messagebird->messages->create($message); 
+
                     header('Location: ./creditAdmin.php');
                 }
             }else{
